@@ -12,14 +12,35 @@ GlobalClearFlag(_Flag);
 IF
 GlobalFlagSet("LLPARTY_Commands_IncreaseMaxPartySize")
 AND
-LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_IncreaseMaxPartySize")
+NOT DB_LLPARTY_Temp_NextMaxPartySize(_)
 AND
 DB_LLPARTY_MaxPartySize(_Max)
+THEN
+DB_LLPARTY_Temp_NextMaxPartySize(_Max);
+
+IF
+GlobalFlagSet("LLPARTY_Commands_DecreaseMaxPartySize")
+AND
+NOT DB_LLPARTY_Temp_NextMaxPartySize(_)
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+THEN
+DB_LLPARTY_Temp_NextMaxPartySize(_Max);
+
+IF
+GlobalFlagSet("LLPARTY_Commands_IncreaseMaxPartySize")
+AND
+LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_IncreaseMaxPartySize")
+AND
+DB_LLPARTY_Temp_NextMaxPartySize(_Max)
 AND
 IntegerSum(_Max, 1, _NextMax)
 AND
 _NextMax <= 10
+AND
+IntegertoString(_NextMax, _NextStr)
 THEN
+LLPARTY_Log("[LLPARTY:Settings:IncreaseMaxPartySize] Next max party size set to [",_NextStr,"].");
 SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
 DB_LLPARTY_Temp_NextMaxPartySize(_NextMax);
 LLPARTY_Settings_UpdateDialogVars();
@@ -30,12 +51,15 @@ GlobalFlagSet("LLPARTY_Commands_DecreaseMaxPartySize")
 AND
 LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_DecreaseMaxPartySize")
 AND
-DB_LLPARTY_MaxPartySize(_Max)
+DB_LLPARTY_Temp_NextMaxPartySize(_Max)
 AND
 IntegerSubtract(_Max, 1, _NextMax)
 AND
 _NextMax >= 4
+AND
+IntegertoString(_NextMax, _NextStr)
 THEN
+LLPARTY_Log("[LLPARTY:Settings:IncreaseMaxPartySize] Next max party size set to [",_NextStr,"].");
 SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
 DB_LLPARTY_Temp_NextMaxPartySize(_NextMax);
 LLPARTY_Settings_UpdateDialogVars();
@@ -112,6 +136,7 @@ LLPARTY_InstallMod();
 IF
 GlobalFlagSet("LLPARTY_Commands_ResetPartySizeToDefault")
 THEN
+LLPARTY_Log("[LLPARTY:Settings:ResetPartySizeToDefault] Next max party size set to [6].");
 GlobalClearFlag("LLPARTY_Commands_ResetPartySizeToDefault");
 SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
 DB_LLPARTY_Temp_NextMaxPartySize(6);
@@ -121,11 +146,12 @@ GlobalSetFlag("LLPARTY_Settings_MaxPartySizeChanged");
 IF
 GlobalFlagSet("LLPARTY_Commands_ResetPartySizeToDOS2DEDefault")
 THEN
+LLPARTY_Log("[LLPARTY:Settings:ResetPartySizeToDefault] Next max party size set to [4].");
 GlobalClearFlag("LLPARTY_Commands_ResetPartySizeToDOS2DEDefault");
 SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
 DB_LLPARTY_Temp_NextMaxPartySize(4);
 LLPARTY_Settings_UpdateDialogVars();
-GlobalSetFlag("LLPARTY_Settings_MaxPartySizeChanged")
+GlobalSetFlag("LLPARTY_Settings_MaxPartySizeChanged");
 //END_REGION
 
 //REGION DIALOG_EVENTS
