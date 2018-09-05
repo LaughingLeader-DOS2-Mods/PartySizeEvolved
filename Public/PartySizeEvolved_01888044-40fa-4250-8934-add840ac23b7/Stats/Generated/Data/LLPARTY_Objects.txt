@@ -1,0 +1,7 @@
+new entry "LLPARTY_SettingsMenuBook"
+type "Object"
+using "_Generics"
+data "Act part" "0"
+data "Value" "0"
+data "Weight" "0"
+data "Unique" "1"

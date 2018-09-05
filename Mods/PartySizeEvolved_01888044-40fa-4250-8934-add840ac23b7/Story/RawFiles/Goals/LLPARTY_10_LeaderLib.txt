@@ -15,6 +15,8 @@ DB_LLPARTY_RegisteredLeaderLibSettings(1)
 THEN
 DB_LeaderLib_ModApi_RegisterActiveGoal("PartySizeEvolved", "LaughingLeader", "LLPARTY_ZZZ_Updater");
 DB_LeaderLib_ModApi_RegisterMenu("LaughingLeader.PartySizeEvolved", "[Party Size Evolved] Settings", "LLPARTY_SettingsMenu", "PartySizeEvolved", "LaughingLeader");
+DB_LeaderLib_Treasure_TreasureItemTemplates("LeaderLib.LeaderTrader.ModBooks", "BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", 1, "");
+DB_LeaderLib_Treasure_ItemMaxAmount("LeaderLib.LeaderTrader.ModBooks", "BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", 1);
 
 PROC
 LLPARTY_Updater_VersionChanged((STRING)_OldVersion, (STRING)_NewVersion)

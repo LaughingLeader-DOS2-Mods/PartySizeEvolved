@@ -169,3 +169,5 @@ DB_GLO_PartyAmountFlags 2
 DB_LeaderLib_ModApi_RegisterMenu 5
 DB_LeaderLib_ModApi_RegisterMod 3
 DB_LeaderLib_ModApi_RegisterActiveGoal 3
+DB_LeaderLib_Treasure_TreasureItemTemplates 4
+DB_LeaderLib_Treasure_ItemMaxAmount 3
