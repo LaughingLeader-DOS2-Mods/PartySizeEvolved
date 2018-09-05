@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+StoryEvent(_, "LeaderLib_Initialized")
+AND
+NOT DB_LLPARTY_RegisteredLeaderLibSettings(_)
+THEN
+DB_LLPARTY_RegisteredLeaderLibSettings(1);
+
+IF
+DB_LLPARTY_RegisteredLeaderLibSettings(1)
+THEN
+DB_LeaderLib_ModApi_RegisterActiveGoal("PartySizeEvolved", "LaughingLeader", "LLPARTY_ZZZ_Updater");
+DB_LeaderLib_ModApi_RegisterMenu("LaughingLeader.PartySizeEvolved", "[Party Size Evolved] Settings", "LLPARTY_SettingsMenu", "PartySizeEvolved", "LaughingLeader");
+
+PROC
+LLPARTY_Updater_VersionChanged((STRING)_OldVersion, (STRING)_NewVersion)
+THEN
+DB_NOOP(1);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

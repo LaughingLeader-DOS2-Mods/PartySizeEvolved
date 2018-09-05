@@ -1,0 +1,506 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Phases of a Reflection dialog:
+//1) Exclamation marks above all players head
+//2) Talking to each other starts reflection dialog with anyone near.
+//3) Player 1-4 choose one of max eight options (A-H).
+//4) If all nearby players have chosen, it ends.
+
+IF
+GlobalFlagSet("GLO_DisableReflectionsPermanently")
+THEN
+GoalCompleted;
+
+//REGION Public functions
+PROC
+ProcDefineReflectionDialog((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+AND
+NOT DB_ReflectionDialog_InProgress(_Dialog,_)
+AND
+NOT DB_ReflectionDialog_Finished(_Dialog)
+AND
+DB_ReflectionDialogs_Queued(_Player,_CurrentDialog)
+THEN
+ProcCancelReflectionDialog(_CurrentDialog);
+
+PROC
+ProcDefineReflectionDialog((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+AND
+NOT DB_ReflectionDialog_InProgress(_Dialog,_)
+AND
+NOT DB_ReflectionDialog_Finished(_Dialog)
+THEN
+ProcDefineReflectionDialogIfPlayersAvailable(_Dialog,_SourcePlayer);
+//END_REGION
+
+//REGION Exclamation marks & Dialog Managment
+PROC
+ProcDefineReflectionDialogIfPlayersAvailable((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+THEN
+DB_AvailableReflectionDialogPlayerCount(0);
+
+PROC
+ProcDefineReflectionDialogIfPlayersAvailable((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+AND
+DB_AvailableReflectionDialogPlayer(_Player)
+THEN
+NOT DB_AvailableReflectionDialogPlayer(_Player);
+
+PROC
+ProcDefineReflectionDialogIfPlayersAvailable((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+AND
+DB_Avatars(_Player)
+AND
+NOT DB_Dead(_Player)
+AND
+CharacterIsInPartyWith(_SourcePlayer,_Player,1)
+AND
+GetDistanceTo(_Player,_SourcePlayer,_Dist)
+AND
+_Dist < 30.0
+AND
+DB_AvailableReflectionDialogPlayerCount(_Count)
+AND
+IntegerSum(_Count,1,_New)
+THEN
+NOT DB_AvailableReflectionDialogPlayerCount(_Count);
+DB_AvailableReflectionDialogPlayerCount(_New);
+DB_AvailableReflectionDialogPlayer(_Player);
+
+PROC
+ProcDefineReflectionDialogIfPlayersAvailable((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+AND
+DB_AvailableReflectionDialogPlayer(_Avatar)
+AND
+DB_CompanionAvatarBond(_Player,_Avatar)
+AND
+NOT DB_Dead(_Player)
+AND
+CharacterIsInPartyWith(_Avatar,_Player,1)
+AND
+CharacterIsPolymorphInteractionDisabled(_Player,0)
+AND
+IsTagged(_Player,"HENCHMAN",0)
+AND
+GetDistanceTo(_Player,_SourcePlayer,_Dist)
+AND
+_Dist < 30.0
+AND
+DB_AvailableReflectionDialogPlayerCount(_Count)
+AND
+IntegerSum(_Count,1,_New)
+THEN
+NOT DB_AvailableReflectionDialogPlayerCount(_Count);
+DB_AvailableReflectionDialogPlayerCount(_New);
+DB_AvailableReflectionDialogPlayer(_Player);
+
+PROC
+ProcDefineReflectionDialogIfPlayersAvailable((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+AND
+DB_AvailableReflectionDialogPlayerCount(_Count)
+AND
+_Count>=2
+THEN
+PROC_PeaceTimerLaunch(_Dialog,60000);
+
+PROC
+ProcDefineReflectionDialogIfPlayersAvailable((STRING)_Dialog,(CHARACTERGUID)_SourcePlayer)
+AND
+DB_AvailableReflectionDialogPlayerCount(_Count)
+AND
+_Count>=2
+AND
+DB_AvailableReflectionDialogPlayer(_Player)
+THEN
+PROC_CheckPlayTut(_Player,"TUT_ReflectionDialog");
+ApplyStatus(_Player,"REFLECTION",-1.0);
+SetHasDialog(_Player,1);
+DB_ReflectionDialogs_Queued(_Player,_Dialog);
+ProcReflectionSaveDialogState(_Player);
+
+PROC
+ProcDefineReflectionDialogIfPlayersAvailable((STRING)_,_)
+AND
+DB_AvailableReflectionDialogPlayerCount(_Count)
+THEN
+NOT DB_AvailableReflectionDialogPlayerCount(_Count);
+
+IF
+CharacterDied(_Char)
+AND
+_Char.DB_IsPlayer()
+AND
+DB_ReflectionDialogs_Queued(_Char,_Dialog)
+THEN
+ProcCancelReflectionDialog(_Dialog);
+
+PROC
+ProcCancelReflectionDialog((STRING)_ReflectionDialog)
+THEN
+TimerCancel(_ReflectionDialog);
+
+PROC
+ProcCancelReflectionDialog((STRING)_ReflectionDialog)
+AND
+DB_ReflectionDialogs_Queued(_Player,_ReflectionDialog)
+THEN
+ProcRestorePlayerToBeforeReflectionDialog(_Player,_ReflectionDialog);
+
+PROC
+ProcRestorePlayerToBeforeReflectionDialog((CHARACTERGUID)_Player,(STRING)_ReflectionDialog)
+THEN
+RemoveStatus(_Player,"REFLECTION");
+NOT DB_ReflectionDialogs_Queued(_Player,_ReflectionDialog);
+ProcRestoreSavedDialog(_Player);
+
+IF
+DialogStarted(_ReflectionDialog,_)
+AND
+DB_ReflectionDialogs_Queued(_,_ReflectionDialog)
+THEN
+// This will also restore the previous dialog
+ProcCancelReflectionDialog((STRING)_ReflectionDialog);
+
+IF
+TimerFinished(_ReflectionDialog)
+AND
+DB_ReflectionDialogs_Queued(_,_ReflectionDialog)
+THEN
+ProcCancelReflectionDialog((STRING)_ReflectionDialog);
+
+PROC
+PROC_GLOBAL_DialogStartRequested(_Player1,_Player2)
+AND
+DB_ReflectionDialogs_Queued((CHARACTERGUID)_Player1,_Dialog)
+AND
+DB_ReflectionDialogs_Queued((CHARACTERGUID)_Player2,_Dialog)
+AND
+IsTagged(_Player2,"AVATAR",1)
+THEN
+ProcStartReflectionDialog(_Player2,_Dialog);
+
+PROC
+ProcReflectionSaveDialogState((CHARACTERGUID)_Player)
+AND
+DB_Dialogs(_Player,_Dialog)
+THEN
+ProcRemoveAllDialogEntriesForSpeaker(_Player);
+DB_ReflectionSavedDialog(_Player,_Dialog);
+
+// Players that did not have any dialog before the reflection dialog (in practice: avatars)
+PROC
+ProcRestoreSavedDialog((CHARACTERGUID)_Player)
+AND
+NOT DB_ReflectionSavedDialog(_Player,_)
+THEN
+SetHasDialog(_Player,0);
+
+PROC
+ProcRestoreSavedDialog((CHARACTERGUID)_Player)
+AND
+DB_ReflectionSavedDialog(_Player,_Dialog)
+THEN
+DB_Dialogs(_Player,_Dialog);
+NOT DB_ReflectionSavedDialog(_Player,_Dialog);
+
+//END_REGION
+
+//REGION Starting the Reflection Dialog
+PROC
+ProcStartReflectionDialog((CHARACTERGUID)_Player1,(STRING)_ReflectionDialogName)
+AND
+NOT DB_ReflectionDialog_InProgress(_ReflectionDialogName,_)
+AND
+NOT DB_ReflectionDialog_Finished(_ReflectionDialogName)
+THEN
+Proc_ReflectionDialog_CollectPlayers(_Player1,_ReflectionDialogName);
+Proc_ReflectionDialog_Phase1(_Player1,_ReflectionDialogName);
+
+//Collect all available (nearby) players and add them to an indexed list, with the dialog started in pos 1.
+PROC
+Proc_ReflectionDialog_CollectPlayers((CHARACTERGUID)_Player1,(STRING)_ReflectionDialogName)
+THEN
+DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,0);
+
+//Collect all avatars
+PROC
+Proc_ReflectionDialog_CollectPlayers((CHARACTERGUID)_Player1,(STRING)_ReflectionDialogName)
+AND
+DB_IsPlayer((CHARACTERGUID)_Player)
+AND
+IsTagged(_Player,"AVATAR",1)
+AND
+QRY_ReflectionDialog_ShouldCollect(_Player,_ReflectionDialogName,_Player1)
+AND
+QRY_SpeakerIsAvailableAndInDialogRange(_Player,_Player1)
+AND
+DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_Count)
+AND
+IntegerSum(_Count,1,_NewCount)
+THEN
+DB_ReflectionDialog_Players(_ReflectionDialogName,_Player,_NewCount);
+NOT DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_Count);
+DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_NewCount);
+
+//Collect all party companions
+PROC
+Proc_ReflectionDialog_CollectPlayers((CHARACTERGUID)_Player1,(STRING)_ReflectionDialogName)
+AND
+DB_LLPARTY_MaxPartySize(_MaxPartySize)
+AND
+DB_IsPlayer((CHARACTERGUID)_Player)
+AND
+IsTagged(_Player,"AVATAR",0)
+AND
+CharacterIsPolymorphInteractionDisabled(_Player,0)
+AND
+IsTagged(_Player,"HENCHMAN",0)
+AND
+QRY_ReflectionDialog_ShouldCollect(_Player,_ReflectionDialogName,_Player1)
+AND
+QRY_SpeakerIsAvailableAndInDialogRange(_Player,_Player1)
+AND
+DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_Count)
+AND
+IntegerSum(_Count,1,_NewCount)
+AND
+_NewCount <= _MaxPartySize // Sole reason for this file
+THEN
+DB_ReflectionDialog_Players(_ReflectionDialogName,_Player,_NewCount);
+NOT DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_Count);
+DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_NewCount);
+
+//REGION Collect Queries
+//Global RDs ignore party checks
+QRY
+QRY_ReflectionDialog_ShouldCollect((CHARACTERGUID)_Player,(STRING)_ReflectionDialogName,(CHARACTERGUID)_Player1)
+AND
+DB_GlobalReflectionDialog(_ReflectionDialogName)
+THEN
+DB_NOOP(1);
+
+//Check in Party
+QRY
+QRY_ReflectionDialog_ShouldCollect((CHARACTERGUID)_Player,(STRING)_ReflectionDialogName,(CHARACTERGUID)_Player1)
+AND
+NOT DB_GlobalReflectionDialog(_ReflectionDialogName)
+AND
+CharacterIsInPartyWith(_Player,_Player1,1)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+PROC
+Proc_ReflectionDialog_CollectPlayers((CHARACTERGUID)_Player1,(STRING)_ReflectionDialogName)
+AND
+DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_Count)
+THEN
+NOT DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_Count);
+//END_REGION
+
+
+//REGION Phase 1
+PROC
+Proc_ReflectionDialog_Phase1((CHARACTERGUID)_Player1,(STRING)_ReflectionDialogName)
+THEN
+Proc_StartDialog(0,"ReflectionDialogWrapper",_Player1);
+DB_ReflectionWrapperStarted(_ReflectionDialogName,(GUIDSTRING)_Player1);
+
+IF
+DialogStarted("ReflectionDialogWrapper",_ID)
+AND
+DB_DialogPlayers(_ID,_Player1,1)
+AND
+DB_ReflectionWrapperStarted(_ReflectionDialogName,_Player1)
+THEN
+DB_ReflectionDialog_InProgress(_ReflectionDialogName,_ID);
+//Start looping over all available players starting from the first.
+DB_ReflectionDialog_Phase1_Index(1);
+Proc_ReflectionDialog_Phase1_NextPlayer(_ReflectionDialogName,1);
+
+IF
+DialogEnded("ReflectionDialogWrapper",_ID)
+AND
+DB_DialogPlayers(_ID,_Player1,1)
+AND
+DB_ReflectionWrapperStarted(_ReflectionDialogName,_Player1)
+AND
+DB_ReflectionDialog_Players(_ReflectionDialogName,_Player,_Index)
+THEN
+NOT DB_ReflectionDialog_Players(_ReflectionDialogName,_Player,_Index);
+Proc_ReflectionDialogDone(_ReflectionDialogName,(CHARACTERGUID)_Player1);
+
+PROC
+Proc_ReflectionDialogDone((STRING)_ReflectionDialogName,(CHARACTERGUID)_Player)
+THEN
+DB_NOOP(1);
+
+IF
+DialogEnded("ReflectionDialogWrapper",_ID)
+AND
+DB_DialogPlayers(_ID,_Player1,1)
+AND
+DB_ReflectionWrapperStarted(_ReflectionDialogName,_Player1)
+THEN
+NOT DB_ReflectionWrapperStarted(_ReflectionDialogName,_Player1);
+
+//If a character does NOT exist at that index, all characters were exhausted, finish.
+PROC
+Proc_ReflectionDialog_Phase1_NextPlayer((STRING)_ReflectionDialogName,(INTEGER)_Index)
+AND
+NOT DB_ReflectionDialog_Players(_ReflectionDialogName,_,_Index)
+AND
+DB_ReflectionDialog_InProgress(_ReflectionDialogName,_InstanceID)
+THEN
+NOT DB_ReflectionDialog_Phase1_Index(_Index);
+NOT DB_ReflectionDialog_InProgress(_ReflectionDialogName,_InstanceID);
+DB_ReflectionDialog_Finished(_ReflectionDialogName);
+DialogResume(_InstanceID);
+
+
+PROC
+ProcCheckLastReflectionPlayer((CHARACTERGUID)_Player,(STRING)_ReflectionDialogName,(INTEGER)_Index)
+AND
+IntegerSum(1,_Index,_NextIndex)
+AND
+NOT DB_ReflectionDialog_Players(_ReflectionDialogName,_,_NextIndex)
+THEN
+ObjectSetFlag(_Player,"GLO_IsLastPlayerInReflectionDialog");
+
+PROC
+ProcCheckLastReflectionPlayer((CHARACTERGUID)_Player,(STRING)_ReflectionDialogName,(INTEGER)_Index)
+AND
+IntegerSum(1,_Index,_NextIndex)
+AND
+DB_ReflectionDialog_Players(_ReflectionDialogName,_,_NextIndex)
+THEN
+ObjectClearFlag(_Player,"GLO_IsLastPlayerInReflectionDialog",0);
+
+//If a character exist at that index, start a dialog with that character as first speaker
+PROC
+Proc_ReflectionDialog_Phase1_NextPlayer((STRING)_ReflectionDialogName,(INTEGER)_Index)
+AND
+DB_ReflectionDialog_Players(_ReflectionDialogName,_Player,_Index)
+AND
+DB_ReflectionDialog_PlayerIdentifier(_Index,_PlayerIdentifier)
+AND
+DB_ReflectionDialog_InProgress(_ReflectionDialogName,_InstanceID)
+AND
+DB_ReflectionWrapperStarted(_ReflectionDialogName,_Player1)
+THEN
+ProcCheckLastReflectionPlayer(_Player,_ReflectionDialogName,_Index);
+SetTag(_Player,_PlayerIdentifier);
+Proc_PartyDecisionDialog_DoDialogWithObservers(_Player,_ReflectionDialogName,_InstanceID,0);
+ProcObjectTimer(_Player1,"ReflectionDialogFallbackTimer",2000);
+
+IF
+DialogStarted(_ReflectionDialogName,_Inst)
+AND
+DB_ReflectionWrapperStarted(_ReflectionDialogName,_Player1)
+THEN
+ProcObjectTimerCancel(_Player1,"ReflectionDialogFallbackTimer");
+
+//Fallback if a Partydialog refused to start up.
+PROC
+ProcObjectTimerFinished(_Player1,"ReflectionDialogFallbackTimer")
+AND
+DB_ReflectionWrapperStarted(_ReflectionDialogName,_Player1)
+AND
+DB_ReflectionDialog_Phase1_Index(_Index)
+AND
+IntegerSum(_Index,1,_NewIndex)
+AND
+DB_DialogPlayers(_Inst,_Player,1)
+AND
+DB_ReflectionDialog_PlayerIdentifier(_Index,_PlayerIdentifier)
+THEN
+ClearTag(_Player,_PlayerIdentifier);
+NOT DB_ReflectionDialog_Phase1_Index(_Index);
+DB_ReflectionDialog_Phase1_Index(_NewIndex);
+ObjectClearFlag(_Player,"GLO_IsLastPlayerInReflectionDialog",0);
+Proc_ReflectionDialog_Phase1_NextPlayer(_ReflectionDialogName,_NewIndex);
+
+
+//A dialog in phase 1 is done, try again with index + 1
+IF
+DialogEnded(_ReflectionDialogName,_Inst)
+AND
+DB_ReflectionDialog_InProgress(_ReflectionDialogName,_)
+AND
+DB_ReflectionDialog_Phase1_Index(_Index)
+AND
+IntegerSum(_Index,1,_NewIndex)
+AND
+DB_DialogPlayers(_Inst,_Player,1)
+AND
+DB_ReflectionDialog_PlayerIdentifier(_Index,_PlayerIdentifier)
+THEN
+ClearTag(_Player,_PlayerIdentifier);
+NOT DB_ReflectionDialog_Phase1_Index(_Index);
+DB_ReflectionDialog_Phase1_Index(_NewIndex);
+ObjectClearFlag(_Player,"GLO_IsLastPlayerInReflectionDialog",0);
+Proc_ReflectionDialog_Phase1_NextPlayer(_ReflectionDialogName,_NewIndex);
+//END_REGION
+
+
+//REGION Remove individual from an RD
+// First count how many people are left for the RD: if only one is left after this player,
+// then cancel it altogether since there's no one left to reflect with
+PROC
+Proc_ReflectionDialog_CancelForPlayer((CHARACTERGUID)_Player)
+AND
+DB_ReflectionDialogs_Queued(_Player,_ReflectionDialog)
+THEN
+// If the RD was nor queued for this player, we won't declare the counter and hence
+// none of the following will execute either since they all either
+// check DB_ReflectionDialogs_Queued(_Player,_ReflectionDialog) or the counter
+ProcDeclareCounter("ReflectionDialog_CountRemainingQueuedReflectionPlayers");
+
+PROC
+Proc_ReflectionDialog_CancelForPlayer((CHARACTERGUID)_Player)
+AND
+DB_ReflectionDialogs_Queued(_Player,_ReflectionDialog)
+AND
+DB_ReflectionDialogs_Queued(_OtherPlayer,_ReflectionDialog)
+THEN
+ProcIncreaseCounter("ReflectionDialog_CountRemainingQueuedReflectionPlayers");
+
+// Two people (or fewer, although that should never happen for the RD ->
+// kill the RD since after removing this one there will be at most one left
+PROC
+Proc_ReflectionDialog_CancelForPlayer((CHARACTERGUID)_Player)
+AND
+DB_GlobalCounter("ReflectionDialog_CountRemainingQueuedReflectionPlayers",_Count)
+AND
+_Count <= 2
+AND
+DB_ReflectionDialogs_Queued(_Player,_ReflectionDialog)
+THEN
+ProcCancelReflectionDialog(_ReflectionDialog);
+
+// Three or more people left -> just remove this one
+PROC
+Proc_ReflectionDialog_CancelForPlayer((CHARACTERGUID)_Player)
+AND
+DB_GlobalCounter("ReflectionDialog_CountRemainingQueuedReflectionPlayers",_Count)
+AND
+_Count > 2
+AND
+DB_ReflectionDialogs_Queued(_Player,_ReflectionDialog)
+THEN
+ProcRestorePlayerToBeforeReflectionDialog(_Player,_ReflectionDialog);
+
+// Clean up
+PROC
+Proc_ReflectionDialog_CancelForPlayer((CHARACTERGUID)_Player)
+THEN
+ProcRemoveCounter("ReflectionDialog_CountRemainingQueuedReflectionPlayers");
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

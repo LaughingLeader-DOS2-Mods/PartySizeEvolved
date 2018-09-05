@@ -1,0 +1,79 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION INSTALL
+
+PROC
+LLPARTY_InstallMod()
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+THEN
+SysClear("DB_GLO_PartyAmountFlags", 2);
+LLPARTY_PartyNumber_Internal_AddPlayerEntry(0, _Max);
+
+PROC
+LLPARTY_PartyNumber_Internal_AddPlayerEntry((INTEGER)_CurrentCount, (INTEGER)_Max)
+AND
+IntegerSum(_CurrentCount, 1, _PlayerIndex)
+AND
+LLPARTY_PartyNumber_QRY_CreatePartySizeFlag(_PlayerIndex)
+AND
+DB_LLPARTY_PartySize_Temp_NextFlag(_PlayerIndex, _Flag)
+THEN
+NOT DB_LLPARTY_PartySize_Temp_NextFlag(_PlayerIndex, _Flag);
+DB_GLO_PartyAmountFlags(_Flag, _PlayerIndex);
+LLPARTY_PartyNumber_Internal_IterateNextEntry(_PlayerIndex, _Max);
+
+QRY
+LLPARTY_PartyNumber_QRY_CreatePartySizeFlag((INTEGER)_PlayerIndex)
+AND
+_PlayerIndex < 5
+AND
+IntegertoString(_PlayerIndex, _IndexStr)
+AND
+StringConcatenate("GLO_PartyOf", _IndexStr, _Flag)
+THEN
+DB_LLPARTY_PartySize_Temp_NextFlag(_PlayerIndex, _Flag);
+
+//Use a random tag between PDD_Player1 and PDD_Player4, so generics have reflection dialog
+QRY
+LLPARTY_PartyNumber_QRY_CreatePartySizeFlag((INTEGER)_PlayerIndex)
+AND
+_PlayerIndex >= 5
+THEN
+// This flag is used in dialog, so just go with what actually has things written for it
+DB_LLPARTY_PartySize_Temp_NextFlag(_PlayerIndex, "GLO_PartyOf4");
+
+IF
+DB_GLO_PartyAmountFlags(_Flag, _PlayerIndex)
+AND
+IntegertoString(_PlayerIndex, _IndexStr)
+THEN
+LLPARTY_Log("[LLPARTY:PartyNumber:Setup] Added [",_IndexStr,"][", _Flag, "] to [DB_GLO_PartyAmountFlags]");
+
+PROC
+LLPARTY_PartyNumber_Internal_IterateNextEntry((INTEGER)_PlayerIndex, (INTEGER)_Max)
+AND
+_PlayerIndex < _Max
+THEN
+LLPARTY_PartyNumber_Internal_AddPlayerEntry(_PlayerIndex, _Max);
+
+PROC
+LLPARTY_PartyNumber_Internal_IterateNextEntry((INTEGER)_PlayerIndex, (INTEGER)_Max)
+AND
+_PlayerIndex >= _Max
+AND
+IntegertoString(_Max, _MaxStr)
+AND
+StringConcatenate("[LLPARTY:PartyNumber:Setup] Updated [DB_GLO_PartyAmountFlags] database to player count [",_MaxStr, _Str1)
+AND
+StringConcatenate(_Str1, "].", _Str2)
+THEN
+DebugBreak(_Str2);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

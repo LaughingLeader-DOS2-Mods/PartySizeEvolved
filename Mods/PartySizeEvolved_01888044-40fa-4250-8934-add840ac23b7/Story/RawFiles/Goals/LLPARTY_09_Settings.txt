@@ -1,0 +1,191 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+QRY
+LLPARTY_QRY_ClearGlobalFlag((STRING)_Flag)
+THEN
+GlobalClearFlag(_Flag);
+
+//REGION FLAG_COMMANDS
+IF
+GlobalFlagSet("LLPARTY_Commands_IncreaseMaxPartySize")
+AND
+LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_IncreaseMaxPartySize")
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+IntegerSum(_Max, 1, _NextMax)
+AND
+_NextMax <= 10
+THEN
+SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
+DB_LLPARTY_Temp_NextMaxPartySize(_NextMax);
+LLPARTY_Settings_UpdateDialogVars();
+GlobalSetFlag("LLPARTY_Settings_MaxPartySizeChanged");
+
+IF
+GlobalFlagSet("LLPARTY_Commands_DecreaseMaxPartySize")
+AND
+LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_DecreaseMaxPartySize")
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+IntegerSubtract(_Max, 1, _NextMax)
+AND
+_NextMax >= 4
+THEN
+SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
+DB_LLPARTY_Temp_NextMaxPartySize(_NextMax);
+LLPARTY_Settings_UpdateDialogVars();
+GlobalSetFlag("LLPARTY_Settings_MaxPartySizeChanged");
+
+IF
+GlobalFlagSet("LLPARTY_Commands_ConfirmPartySizeChanges")
+AND
+LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_ConfirmPartySizeChanges")
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+DB_LLPARTY_Temp_NextMaxPartySize(_NextMax)
+AND
+_Max != _NextMax
+AND
+IntegertoString(_NextMax, _IntStr)
+THEN
+LLPARTY_Log("[LLPARTY:Settings:ConfirmPartySizeChanges] Setting max party size to [",_IntStr,"] and re-installing.");
+SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
+SysClear("DB_LLPARTY_MaxPartySize", 1);
+DB_LLPARTY_MaxPartySize(_NextMax);
+Proc_CheckPartyFull();
+LLPARTY_InstallMod();
+LLPARTY_Settings_UpdateDialogVars();
+
+IF
+GlobalFlagSet("LLPARTY_Commands_ConfirmPartySizeChanges")
+AND
+LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_ConfirmPartySizeChanges")
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+DB_LLPARTY_Temp_NextMaxPartySize(_NextMax)
+AND
+_Max == _NextMax
+THEN
+SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
+LLPARTY_Log("[LLPARTY:Settings:ConfirmPartySizeChanges] Next party size and current match. Skipping re-initialization.");
+LLPARTY_Settings_UpdateDialogVars();
+
+IF
+GlobalFlagSet("LLPARTY_Commands_ConfirmPartySizeChanges")
+AND
+DB_LLPARTY_MaxPartySize(6)
+AND
+DB_DialogName("LLPARTY_SettingsMenu", _Instance)
+AND
+DialogGetInvolvedPlayer(_Instance, 1, _Player)
+THEN
+ObjectSetFlag(_Player, "LLPARTY_DefaultMaxPartySizeIsSet");
+
+IF
+GlobalFlagSet("LLPARTY_Commands_ConfirmPartySizeChanges")
+THEN
+GlobalClearFlag("LLPARTY_Settings_MaxPartySizeChanged");
+
+IF
+GlobalFlagSet("LLPARTY_Commands_CancelPartySizeChanges")
+AND
+LLPARTY_QRY_ClearGlobalFlag("LLPARTY_Commands_CancelPartySizeChanges")
+THEN
+SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
+LLPARTY_Settings_UpdateDialogVars();
+GlobalClearFlag("LLPARTY_Settings_MaxPartySizeChanged");
+
+IF
+GlobalFlagSet("LLPARTY_Commands_ReInitPartySize")
+THEN
+GlobalClearFlag("LLPARTY_Commands_ReInitPartySize");
+Proc_CheckPartyFull();
+LLPARTY_InstallMod();
+
+IF
+GlobalFlagSet("LLPARTY_Commands_ResetPartySizeToDefault")
+THEN
+GlobalClearFlag("LLPARTY_Commands_ResetPartySizeToDefault");
+SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
+DB_LLPARTY_Temp_NextMaxPartySize(6);
+LLPARTY_Settings_UpdateDialogVars();
+GlobalSetFlag("LLPARTY_Settings_MaxPartySizeChanged");
+
+IF
+GlobalFlagSet("LLPARTY_Commands_ResetPartySizeToDOS2DEDefault")
+THEN
+GlobalClearFlag("LLPARTY_Commands_ResetPartySizeToDOS2DEDefault");
+SysClear("DB_LLPARTY_Temp_NextMaxPartySize", 1);
+DB_LLPARTY_Temp_NextMaxPartySize(4);
+LLPARTY_Settings_UpdateDialogVars();
+GlobalSetFlag("LLPARTY_Settings_MaxPartySizeChanged")
+//END_REGION
+
+//REGION DIALOG_EVENTS
+PROC
+LLPARTY_Settings_UpdateDialogVars()
+AND
+DB_LLPARTY_Temp_NextMaxPartySize(_NextMax)
+THEN
+DialogSetVariableInt("LLPARTY_SettingsMenu", "LLPARTY_MaxPartySize_6e79a6d2-a814-4efa-8ccd-1b9d4810024b", _NextMax);
+
+PROC
+LLPARTY_Settings_UpdateDialogVars()
+AND
+NOT DB_LLPARTY_Temp_NextMaxPartySize(_)
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+THEN
+DialogSetVariableInt("LLPARTY_SettingsMenu", "LLPARTY_MaxPartySize_6e79a6d2-a814-4efa-8ccd-1b9d4810024b", _Max);
+
+IF
+DialogStarted("LLPARTY_SettingsMenu", _Instance)
+AND
+CharacterGetHostCharacter(_Host)
+THEN
+UserSetFlag(_Host, "LLPARTY_IsHost", _Instance);
+LLPARTY_Settings_UpdateDialogVars();
+
+IF
+DialogStarted("LLPARTY_SettingsMenu", _Instance)
+AND
+DialogGetInvolvedPlayer(_Instance, 1, _Player)
+AND
+DB_LLPARTY_MaxPartySize(6)
+THEN
+ObjectSetFlag(_Player, "LLPARTY_DefaultMaxPartySizeIsSet");
+
+IF
+DialogEnded("LLPARTY_SettingsMenu", _Instance)
+AND
+CharacterGetHostCharacter(_Host)
+THEN
+UserClearFlag(_Host, "LLPARTY_IsHost", _Instance);
+
+IF
+DialogEnded("LLPARTY_SettingsMenu", _Instance)
+AND
+DialogGetInvolvedPlayer(_Instance, 1, _Player)
+THEN
+ObjectClearFlag(_Player, "LLPARTY_DefaultMaxPartySizeIsSet");
+//END_REGION
+
+//REGION DEBUG
+IF
+TextEventSet("llparty_settings")
+AND
+CharacterGetHostCharacter(_Host)
+THEN
+Proc_StartDialog(0, "LLPARTY_SettingsMenu", _Host, _Host);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

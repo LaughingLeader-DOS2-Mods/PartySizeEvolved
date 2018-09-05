@@ -1,0 +1,69 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_LLPARTY_MaxPartySize(6);
+KBSECTION
+IF
+RegionStarted(_)
+AND
+NOT GlobalGetFlag("LLPARTY_InitializedExpandedParty", 1)
+THEN
+LLPARTY_SetupExpandedParty();
+
+PROC
+LLPARTY_SetupExpandedParty()
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+NOT DB_Origins_MaxPartySize(_Max)
+THEN
+SysClear("DB_Origins_MaxPartySize", 1);
+DB_Origins_MaxPartySize(_Max);
+GlobalClearFlag("GEN_MaxPlayerCountReached");
+GlobalSetFlag("LLPARTY_InitializedExpandedParty");
+DB_DB_LLPARTY_QueueNextPartyCount(1);
+
+IF
+DB_Origins_MaxPartySize(_Val)
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+_Val != _Max
+THEN
+LLPARTY_SetupExpandedParty();
+
+IF
+RegionStarted(_)
+AND
+DB_LLPARTY_GameStarted(_Val)
+THEN
+NOT DB_LLPARTY_GameStarted(_Val);
+
+IF
+GameStarted(_,_)
+AND
+NOT DB_LLPARTY_GameStarted(_)
+THEN
+DB_LLPARTY_GameStarted(1);
+
+IF
+DB_LLPARTY_QueueNextPartyCount(1)
+AND
+DB_LLPARTY_GameStarted(1)
+THEN
+NOT DB_LLPARTY_QueueNextPartyCount(1);
+LLPARTY_Log("[LLPARTY:MaxPartySize] Party count queued and game already started. Running [Proc_CheckPartyFull].");
+Proc_CheckPartyFull();
+
+IF
+GameStarted(_,_)
+AND
+DB_LLPARTY_QueueNextPartyCount(1)
+THEN
+NOT DB_LLPARTY_QueueNextPartyCount(1);
+LLPARTY_Log("[LLPARTY:MaxPartySize] Party count queued and game just started. Running [Proc_CheckPartyFull].");
+Proc_CheckPartyFull();
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

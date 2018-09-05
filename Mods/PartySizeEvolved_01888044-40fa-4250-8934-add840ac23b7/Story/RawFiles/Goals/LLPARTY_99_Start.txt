@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+RegionStarted(_)
+AND
+NOT GlobalGetFlag("LLPARTY_InstallationComplete", 1)
+THEN
+LLPARTY_Log("[LLPARTY:Start] Installing mod.");
+LLPARTY_InstallMod();
+
+PROC
+LLPARTY_InstallMod()
+THEN
+GlobalSetFlag("LLPARTY_InstallationComplete");
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

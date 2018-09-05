@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1536127063" />
+    <version major="3" minor="6" revision="0" build="4" />
+    <region id="DialogVariables">
+        <node id="root">
+            <children>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="4" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="6e79a6d2-a814-4efa-8ccd-1b9d4810024b" type="31" />
+                    <attribute id="name" value="LLPARTY_MaxPartySize" type="22" />
+                    <attribute id="type" value="Int" type="23" />
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

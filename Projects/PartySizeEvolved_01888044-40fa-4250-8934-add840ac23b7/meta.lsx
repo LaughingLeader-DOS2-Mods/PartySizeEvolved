@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1536122186" />
+    <version major="3" minor="6" revision="0" build="4" />
+    <region id="MetaData">
+        <node id="root">
+            <attribute id="Module" value="01888044-40fa-4250-8934-add840ac23b7" type="23" />
+            <attribute id="Name" value="PartySizeEvolved" type="23" />
+            <attribute id="Type" value="Add-on" type="23" />
+            <attribute id="UUID" value="3f3affb4-6c4c-4478-91c1-016cf2cf8bc6" type="23" />
+        </node>
+    </region>
+</save>

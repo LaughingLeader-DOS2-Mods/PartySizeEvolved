@@ -1,0 +1,54 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+LLPARTY_Updater_SetVersion("1.0.0.0");
+KBSECTION
+//REGION VERSIONING
+IF
+GameStarted(_,_)
+AND
+LLPARTY_Updater_QRY_UpdateNeeded("1.0.0.0")
+THEN
+LLPARTY_Updater_RemoveOldVersions("1.0.0.0");
+LLPARTY_Updater_SetVersion("1.0.0.0");
+
+QRY
+LLPARTY_Updater_QRY_UpdateNeeded((STRING)_Version)
+AND
+NOT DB_Mods_Registered("PartySizeEvolved", "LaughingLeader", _Version)
+THEN
+DB_NOOP(1);
+
+PROC
+LLPARTY_Updater_RemoveOldVersions((STRING)_NewVersion)
+AND
+DB_Mods_Registered("PartySizeEvolved", "LaughingLeader", _Version)
+AND
+_Version != _NewVersion
+THEN
+NOT DB_Mods_Registered("PartySizeEvolved", "LaughingLeader", _Version);
+LLPARTY_Updater_VersionChanged(_Version, _NewVersion);
+
+PROC
+LLPARTY_Updater_VersionChanged((STRING)_OldVersion, (STRING)_NewVersion)
+THEN
+DB_NOOP(1);
+
+PROC
+LLPARTY_Updater_SetVersion((STRING)_Version)
+AND
+GlobalGetFlag("LeaderLib_Initialized", 1)
+THEN
+DB_LeaderLib_ModApi_RegisterMod("PartySizeEvolved", "LaughingLeader", _Version);
+
+PROC
+LLPARTY_Updater_SetVersion((STRING)_Version)
+AND
+NOT GlobalGetFlag("LeaderLib_Initialized", 1)
+THEN
+DB_Mods_Registered("PartySizeEvolved", "LaughingLeader", _Version);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

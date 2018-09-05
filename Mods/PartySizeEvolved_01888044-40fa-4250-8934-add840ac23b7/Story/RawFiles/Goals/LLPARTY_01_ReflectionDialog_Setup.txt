@@ -1,0 +1,93 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION INSTALL
+
+PROC
+LLPARTY_InstallMod()
+AND
+SysIsActive("_GLOBAL_Shared_ReflectionDialog")
+THEN
+SysCompleteGoal("_GLOBAL_Shared_ReflectionDialog");
+
+PROC
+LLPARTY_InstallMod()
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+THEN
+SysClear("DB_ReflectionDialog_PlayerIdentifier", 2);
+LLPARTY_Reflection_Internal_AddPlayerEntry(0, _Max);
+
+PROC
+LLPARTY_Reflection_Internal_AddPlayerEntry((INTEGER)_CurrentCount, (INTEGER)_Max)
+AND
+IntegerSum(_CurrentCount, 1, _PlayerIndex)
+AND
+LLPARTY_QRY_CreatePlayerTag("Reflection", _PlayerIndex)
+AND
+DB_LLPARTY_Temp_NextTag("Reflection", _PlayerIndex, _Tag)
+THEN
+NOT DB_LLPARTY_Temp_NextTag("Reflection", _PlayerIndex, _Tag);
+DB_ReflectionDialog_PlayerIdentifier(_PlayerIndex, _Tag);
+LLPARTY_Reflection_Internal_IterateNextEntry(_PlayerIndex, _Max);
+
+IF
+DB_ReflectionDialog_PlayerIdentifier(_PlayerIndex, _Tag)
+AND
+IntegertoString(_PlayerIndex, _IndexStr)
+THEN
+LLPARTY_Log("[LLPARTY:ReflectionDialog:Setup] Added [",_IndexStr,"][", _Tag, "] to [DB_ReflectionDialog_PlayerIdentifier]");
+
+PROC
+LLPARTY_Reflection_Internal_IterateNextEntry((INTEGER)_PlayerIndex, (INTEGER)_Max)
+AND
+_PlayerIndex < _Max
+AND
+_Max > 0
+THEN
+LLPARTY_Reflection_Internal_AddPlayerEntry(_PlayerIndex, _Max);
+
+PROC
+LLPARTY_Reflection_Internal_IterateNextEntry((INTEGER)_PlayerIndex, (INTEGER)_Max)
+AND
+_PlayerIndex >= _Max
+AND
+IntegertoString(_Max, _MaxStr)
+AND
+StringConcatenate("[LLPARTY:ReflectionDialog:Setup] Updated [DB_ReflectionDialog_PlayerIdentifier] database to player count [",_MaxStr, _Str1)
+AND
+StringConcatenate(_Str1, "].", _Str2)
+THEN
+DebugBreak(_Str2);
+//END_REGION
+
+//REGION UNINSTALL
+PROC
+LLPARTY_UninstallMod()
+THEN
+SysClear("DB_ReflectionDialog_PlayerIdentifier", 2);
+DB_ReflectionDialog_PlayerIdentifier(1,"PDD_Player1");
+DB_ReflectionDialog_PlayerIdentifier(2,"PDD_Player2");
+DB_ReflectionDialog_PlayerIdentifier(3,"PDD_Player3");
+DB_ReflectionDialog_PlayerIdentifier(4,"PDD_Player4");
+
+PROC
+LLPARTY_UninstallMod()
+AND
+NOT SysIsActive("_GLOBAL_Shared_ReflectionDialog")
+THEN
+SysActivateGoal("_GLOBAL_Shared_ReflectionDialog");
+//END_REGION
+
+IF
+GlobalFlagCleared("GLO_DisableReflectionsPermanently")
+AND
+NOT SysIsActive("LLPARTY_02_ReflectionDialog_Override")
+THEN
+SysActivateGoal("LLPARTY_02_ReflectionDialog_Override");
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

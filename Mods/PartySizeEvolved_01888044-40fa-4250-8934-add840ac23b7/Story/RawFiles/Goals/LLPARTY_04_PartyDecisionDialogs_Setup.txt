@@ -1,0 +1,58 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION INSTALL
+PROC
+LLPARTY_InstallMod()
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+THEN
+SysClear("DB_PartyDecisionDialog_PlayerIdentifier", 2);
+LLPARTY_PartyDecision_Internal_AddPlayerEntry(1, _Max); // Starts at 2
+
+PROC
+LLPARTY_PartyDecision_Internal_AddPlayerEntry((INTEGER)_CurrentCount, (INTEGER)_Max)
+AND
+IntegerSum(_CurrentCount, 1, _PlayerIndex)
+AND
+LLPARTY_QRY_CreatePlayerTag("PartyDecision", _PlayerIndex)
+AND
+DB_LLPARTY_Temp_NextTag("PartyDecision", _PlayerIndex, _Tag)
+THEN
+NOT DB_LLPARTY_Temp_NextTag("PartyDecision", _PlayerIndex, _Tag);
+DB_PartyDecisionDialog_PlayerIdentifier(_PlayerIndex, _Tag);
+LLPARTY_PartyDecision_Internal_IterateNextEntry(_PlayerIndex, _Max);
+
+IF
+DB_PartyDecisionDialog_PlayerIdentifier(_PlayerIndex, _Tag)
+AND
+IntegertoString(_PlayerIndex, _IndexStr)
+THEN
+LLPARTY_Log("[LLPARTY:PartyDecisionDialogs:Setup] Added [",_IndexStr,"][", _Tag, "] to [DB_PartyDecisionDialog_PlayerIdentifier]");
+
+PROC
+LLPARTY_PartyDecision_Internal_IterateNextEntry((INTEGER)_PlayerIndex, (INTEGER)_Max)
+AND
+_PlayerIndex < _Max
+THEN
+LLPARTY_PartyDecision_Internal_AddPlayerEntry(_PlayerIndex, _Max);
+
+PROC
+LLPARTY_PartyDecision_Internal_IterateNextEntry((INTEGER)_PlayerIndex, (INTEGER)_Max)
+AND
+_PlayerIndex >= _Max
+AND
+IntegertoString(_Max, _MaxStr)
+AND
+StringConcatenate("[LLPARTY:PartyDecisionDialogs:Setup] Updated [DB_PartyDecisionDialog_PlayerIdentifier] database to player count [",_MaxStr, _Str1)
+AND
+StringConcatenate(_Str1, "].", _Str2)
+THEN
+DebugBreak(_Str2);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

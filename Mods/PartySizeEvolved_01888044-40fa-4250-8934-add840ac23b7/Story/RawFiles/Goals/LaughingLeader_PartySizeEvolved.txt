@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+LLPARTY_Internal_StartIfCompleted();
+KBSECTION
+PROC
+LLPARTY_Internal_Start()
+THEN
+DebugBreak("[LLPARTY] Starting Expanded Party Size.");
+GoalCompleted;
+
+PROC
+LLPARTY_Internal_StartIfCompleted()
+AND
+DB_StoryStarted(_)
+THEN
+LLPARTY_Internal_Start();
+
+IF
+SavegameLoaded(_,_,_,_)
+THEN
+LLPARTY_Internal_Start();
+
+IF
+GameModeStarted(_,_)
+THEN
+LLPARTY_Internal_Start();
+EXITSECTION
+
+ENDEXITSECTION
