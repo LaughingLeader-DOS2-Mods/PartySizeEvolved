@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <save>
-    <header version="2" time="1536128753" />
+    <header version="2" time="1536133623" />
     <version major="3" minor="6" revision="0" build="4" />
     <region id="Config">
         <node id="root">
@@ -9,13 +9,13 @@
                 <node id="ModuleInfo">
                     <attribute id="Author" value="LaughingLeader" type="30" />
                     <attribute id="CharacterCreationLevelName" value="" type="22" />
-                    <attribute id="Description" value="Expands the party size to 6 by default. This can be configured and increased/decreased at will." type="30" />
+                    <attribute id="Description" value="Expands the party size to 6 by default. This can be increased/decreased at will via the settings menu, allowing you to have up to 10 party members at once." type="30" />
                     <attribute id="Folder" value="PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7" type="30" />
                     <attribute id="GMTemplate" value="" type="22" />
                     <attribute id="LobbyLevelName" value="" type="22" />
                     <attribute id="MD5" value="" type="23" />
                     <attribute id="MenuLevelName" value="" type="22" />
-                    <attribute id="Name" value="PartySizeEvolved" type="22" />
+                    <attribute id="Name" value="Party Size Evolved" type="22" />
                     <attribute id="NumPlayers" value="2" type="1" />
                     <attribute id="PhotoBooth" value="" type="22" />
                     <attribute id="StartupLevelName" value="" type="22" />
