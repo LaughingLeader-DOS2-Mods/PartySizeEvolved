@@ -231,16 +231,24 @@ Proc_StartDialog(0, "LLPARTY_SettingsMenu", _Player, _Player);
 
 //REGION ADD_EVENTS
 IF
-GameStarted(_,_)
+GameStarted(_Level,_)
+AND
+IsCharacterCreationLevel(_Level, 0)
+AND
+NOT GlobalGetFlag("LLPARTY_AddedInitialBook", 1)
+THEN
+TimerCancel("LLPARTY_Timers_MenuBookCheck");
+TimerLaunch("LLPARTY_Timers_MenuBookCheck", 500);
+
+IF
+TimerFinished("LLPARTY_Timers_MenuBookCheck")
 AND
 CharacterGetHostCharacter(_Host)
 AND
-NOT GetItemForItemTemplateInPartyInventory(_Host, "BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", _)
-AND
-NOT UserGetFlag(_Host, "LLPARTY_InitialSettingsBookAdded", 1)
+ItemTemplateIsInPartyInventory(_Host, "BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", 0, 0)
 THEN
 ItemTemplateAddTo("BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", _Host, 1, 1);
-UserSetFlag(_Host, "LLPARTY_InitialSettingsBookAdded", 0);
+GlobalSetFlag("LLPARTY_AddedInitialBook");
 //END_REGION
 EXITSECTION
 
