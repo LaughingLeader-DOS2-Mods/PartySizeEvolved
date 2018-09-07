@@ -1,0 +1,131 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+CharacterUsedSkill(_Player, "Shout_LLPARTY_NextCharacter", _, _)
+THEN
+LLPARTY_CharacterSwitcher_ResetList(_Player);
+
+IF
+CharacterUsedSkill(_Player, "Shout_LLPARTY_NextCharacter", _, _)
+AND
+CharacterGetReservedUserID(_Player, _UserID)
+AND
+DB_IsPlayer(_Character)
+AND
+CharacterGetReservedUserID(_Character, _UserID)
+THEN
+LLPARTY_CharacterSwitcher_AddCharacterToList(_Player, _Character);
+
+IF
+CharacterUsedSkill(_Player, "Shout_LLPARTY_NextCharacter", _, _)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Player, _Index)
+AND
+IntegerSum(_Index, 1, _NextIndex)
+THEN
+LLPARTY_CharacterSwitcher_SwitchToIndex(_Player, _NextIndex, 1);
+
+IF
+CharacterUsedSkill(_Player, "Shout_LLPARTY_PreviousCharacter", _, _)
+THEN
+LLPARTY_CharacterSwitcher_ResetList(_Player);
+
+IF
+CharacterUsedSkill(_Player, "Shout_LLPARTY_PreviousCharacter", _, _)
+AND
+CharacterGetReservedUserID(_Player, _UserID)
+AND
+DB_IsPlayer(_Character)
+AND
+CharacterGetReservedUserID(_Character, _UserID)
+THEN
+LLPARTY_CharacterSwitcher_AddCharacterToList(_Player, _Character);
+
+IF
+CharacterUsedSkill(_Player, "Shout_LLPARTY_PreviousCharacter", _, _)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Player, _Index)
+AND
+IntegerSubtract(_Index, 1, _NextIndex)
+THEN
+LLPARTY_CharacterSwitcher_SwitchToIndex(_Player, _NextIndex, -1);
+
+PROC
+LLPARTY_CharacterSwitcher_SwitchToIndex((CHARACTERGUID)_Player, (INTEGER)_Index, (INTEGER)_Direction)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Character, _Index)
+THEN
+MakePlayerActive(_Character);
+LLPARTY_CharacterSwitcher_AddSkills(_Character);
+
+PROC
+LLPARTY_CharacterSwitcher_SwitchToIndex((CHARACTERGUID)_Player, (INTEGER)_Index, 1)
+AND
+NOT DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _, _Index)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Character, 0)
+THEN
+MakePlayerActive(_Character);
+LLPARTY_CharacterSwitcher_AddSkills(_Character);
+
+PROC
+LLPARTY_CharacterSwitcher_SwitchToIndex((CHARACTERGUID)_Player, (INTEGER)_Index, -1)
+AND
+NOT DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _, _Index)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _Count)
+AND
+IntegerSubtract(_Count, 1, _LastIndex)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Character, _LastIndex)
+THEN
+MakePlayerActive(_Character);
+LLPARTY_CharacterSwitcher_AddSkills(_Character);
+
+PROC
+LLPARTY_CharacterSwitcher_AddSkills((CHARACTERGUID)_Player)
+THEN
+CharacterAddSkill(_Player, "Shout_LLPARTY_NextCharacter", 1);
+CharacterAddSkill(_Player, "Shout_LLPARTY_PreviousCharacter", 1);
+
+PROC
+LLPARTY_CharacterSwitcher_ResetList((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _Count)
+THEN
+NOT DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _Count);
+
+PROC
+LLPARTY_CharacterSwitcher_ResetList((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Character, _Count)
+THEN
+NOT DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Character, _Count);
+
+//REGION BUILD_LIST
+PROC
+LLPARTY_CharacterSwitcher_AddCharacterToList((CHARACTERGUID)_Player, (CHARACTERGUID)_Character)
+AND
+NOT DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _)
+THEN
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, 0);
+
+PROC
+LLPARTY_CharacterSwitcher_AddCharacterToList((CHARACTERGUID)_Player, (CHARACTERGUID)_Character)
+AND
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _Count)
+AND
+IntegerSum(_Count, 1, _NextCount)
+THEN
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerList(_Player, _Character, _Count);
+NOT DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _Count);
+DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _NextCount);
+//END_REGION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

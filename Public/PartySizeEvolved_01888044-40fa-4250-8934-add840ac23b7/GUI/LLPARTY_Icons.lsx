@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1536305463" />
+    <version major="3" minor="6" revision="0" build="4" />
+    <region id="IconUVList">
+        <node id="root">
+            <children>
+                <node id="IconUV">
+                    <attribute id="MapKey" value="LLPARTY_Icons_Skill_NextCharacter" type="22" />
+                    <attribute id="U1" value="0.000976563" type="6" />
+                    <attribute id="U2" value="0.124023" type="6" />
+                    <attribute id="V1" value="0.000976563" type="6" />
+                    <attribute id="V2" value="0.124023" type="6" />
+                </node>
+                <node id="IconUV">
+                    <attribute id="MapKey" value="LLPARTY_Icons_Skill_PreviousCharacter" type="22" />
+                    <attribute id="U1" value="0.125977" type="6" />
+                    <attribute id="U2" value="0.249023" type="6" />
+                    <attribute id="V1" value="0.000976563" type="6" />
+                    <attribute id="V2" value="0.124023" type="6" />
+                </node>
+            </children>
+        </node>
+    </region>
+    <region id="TextureAtlasInfo">
+        <node id="root">
+            <children>
+                <node id="TextureAtlasIconSize">
+                    <attribute id="Height" value="64" type="4" />
+                    <attribute id="Width" value="64" type="4" />
+                </node>
+                <node id="TextureAtlasPath">
+                    <attribute id="Path" value="Public/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/Assets/Textures/Icons/LLPARTY_Icons.dds" type="20" />
+                    <attribute id="UUID" value="c326f13d-5e5a-462e-865b-73e3804e83e3" type="22" />
+                </node>
+                <node id="TextureAtlasTextureSize">
+                    <attribute id="Height" value="512" type="4" />
+                    <attribute id="Width" value="512" type="4" />
+                </node>
+            </children>
+        </node>
+    </region>
+</save>
