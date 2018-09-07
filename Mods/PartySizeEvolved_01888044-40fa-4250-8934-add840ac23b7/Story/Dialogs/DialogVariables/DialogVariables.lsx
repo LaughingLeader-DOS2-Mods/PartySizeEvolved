@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <save>
-    <header version="2" time="1536127063" />
+    <header version="2" time="1536294202" />
     <version major="3" minor="6" revision="0" build="4" />
     <region id="DialogVariables">
         <node id="root">
@@ -11,6 +11,104 @@
                     <attribute id="UUID" value="6e79a6d2-a814-4efa-8ccd-1b9d4810024b" type="31" />
                     <attribute id="name" value="LLPARTY_MaxPartySize" type="22" />
                     <attribute id="type" value="Int" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="72d4befd-4bf2-4d38-bf2c-449bb2b79874" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character01" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="ffbe52fe-b6df-4dac-be22-fe06aba5187c" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character02" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="7fa2a5a1-9df7-4d77-87bf-3c094d9d0233" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character03" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="39ddab98-0631-49cc-8688-a297d0b8611d" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character04" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="ee94340a-766e-483a-a593-140fc2fdac11" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character05" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="19311be2-b1cd-4c15-9159-db9c80c711e9" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character06" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="382ce228-e5f0-4e6d-a91d-880b3e38da10" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character07" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="019033bb-1e5a-4ba4-bfcd-d8616afd8621" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character08" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="83990cbf-8d7c-4b84-9d9f-a0a0aec17d90" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character09" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="c999b4aa-0c4e-4862-a239-95d59420d480" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_Character10" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="4be2a6a0-6569-40f2-ae42-32cef8dca19a" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_SelectedCharacter" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="9bef1cdd-0398-4f3e-9feb-6c5650ba9ce7" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_User01" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="d4c70a51-cb99-434e-b164-307651661f5e" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_User02" type="22" />
+                    <attribute id="type" value="String" type="23" />
+                </node>
+                <node id="DialogVariable">
+                    <attribute id="DefaultValue" value="" type="23" />
+                    <attribute id="Description" value="" type="23" />
+                    <attribute id="UUID" value="4914df17-9191-4fe6-a83a-2246247b77a1" type="31" />
+                    <attribute id="name" value="LLPARTY_PartyManagement_User03" type="22" />
+                    <attribute id="type" value="String" type="23" />
                 </node>
             </children>
         </node>
