@@ -313,6 +313,12 @@ ObjectClearFlag(_Player, _SelectedFlag, 0);
 //END_REGION
 
 IF
+ObjectFlagSet("LLPARTY_PartyManagement_ClearData", (CHARACTERGUID)_Player, _Instance)
+THEN
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_ClearData", _Instance);
+LLPARTY_PartyManagement_ClearData(_Player);
+
+IF
 DialogEnded("LLPARTY_SettingsMenu", _Instance)
 AND
 DialogGetInvolvedPlayer(_Instance, 1, (CHARACTERGUID)_Player)

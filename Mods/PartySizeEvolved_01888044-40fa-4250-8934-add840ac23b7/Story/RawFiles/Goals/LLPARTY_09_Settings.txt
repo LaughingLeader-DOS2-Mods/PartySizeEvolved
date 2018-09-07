@@ -3,11 +3,6 @@ SubGoalCombiner SGC_AND
 INITSECTION
 
 KBSECTION
-QRY
-LLPARTY_QRY_ClearGlobalFlag((STRING)_Flag)
-THEN
-GlobalClearFlag(_Flag);
-
 //REGION FLAG_COMMANDS
 IF
 GlobalFlagSet("LLPARTY_Commands_IncreaseMaxPartySize")
@@ -249,6 +244,20 @@ ItemTemplateIsInPartyInventory(_Host, "BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4
 THEN
 ItemTemplateAddTo("BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", _Host, 1, 1);
 GlobalSetFlag("LLPARTY_AddedInitialBook");
+//END_REGION
+
+//REGION COMMANDS
+IF
+ObjectFlagSet("LLPARTY_Commands_AddCharacterSwitcherSkills", (CHARACTERGUID)_Player, _Instance)
+THEN
+ObjectClearFlag(_Player, "LLPARTY_Commands_AddCharacterSwitcherSkills", _Instance);
+LLPARTY_CharacterSwitcher_AddSkills(_Player);
+
+IF
+ObjectFlagSet("LLPARTY_Commands_RemoveCharacterSwitcherSkills", (CHARACTERGUID)_Player, _Instance)
+THEN
+ObjectClearFlag(_Player, "LLPARTY_Commands_RemoveCharacterSwitcherSkills", _Instance);
+LLPARTY_CharacterSwitcher_RemoveSkills(_Player);
 //END_REGION
 EXITSECTION
 

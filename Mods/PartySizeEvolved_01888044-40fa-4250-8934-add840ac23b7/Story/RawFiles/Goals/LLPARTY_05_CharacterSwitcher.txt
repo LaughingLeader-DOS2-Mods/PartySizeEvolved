@@ -92,6 +92,12 @@ CharacterAddSkill(_Player, "Shout_LLPARTY_NextCharacter", 1);
 CharacterAddSkill(_Player, "Shout_LLPARTY_PreviousCharacter", 1);
 
 PROC
+LLPARTY_CharacterSwitcher_RemoveSkills((CHARACTERGUID)_Player)
+THEN
+CharacterRemoveSkill(_Player, "Shout_LLPARTY_NextCharacter");
+CharacterRemoveSkill(_Player, "Shout_LLPARTY_PreviousCharacter");
+
+PROC
 LLPARTY_CharacterSwitcher_ResetList((CHARACTERGUID)_Player)
 AND
 DB_LLPARTY_CharacterSwitcher_Temp_PlayerListCount(_Player, _Count)
