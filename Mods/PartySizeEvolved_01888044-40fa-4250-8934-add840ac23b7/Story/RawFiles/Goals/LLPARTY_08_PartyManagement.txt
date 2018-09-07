@@ -312,6 +312,45 @@ ObjectClearFlag(_Player, _AvailableFlag, 0);
 ObjectClearFlag(_Player, _SelectedFlag, 0);
 //END_REGION
 
+//REGION PARTY_BAG
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_MoveAllItemsFromSelectedPlayer", (CHARACTERGUID)_Player, _Instance)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+THEN
+MoveAllItemsTo(_PartyMember, _Player, 0, 0, 0);
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_MoveAllItemsFromSelectedPlayer", _Instance);
+CharacterStatusText(_Player, "LLPARTY_StatusText_MoveAllItemsSuccess");
+
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_MoveAllItemsFromSelectedPlayer", (CHARACTERGUID)_Player, _Instance)
+AND
+ObjectGetFlag(_Player, "LLPARTY_PartyManagement_MoveAllItemsFromSelectedPlayer", 1)
+THEN
+CharacterStatusText(_Player, "LLPARTY_StatusText_NoPlayerSelectedError");
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_MoveAllItemsFromSelectedPlayer", _Instance);
+
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_SetAutoMoveAllItemsOnSelectedPlayer", (CHARACTERGUID)_Player, _Instance)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+THEN
+SetVarObject(_PartyMember, "LLPARTY_AutoMoveItemsTarget", _Player);
+ObjectSetFlag(_PartyMember, "LLPARTY_PartyManagement_AutoMoveAllItems", _Instance);
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_MoveAllItemsFromSelectedPlayer", _Instance);
+CharacterStatusText(_Player, "LLPARTY_StatusText_AutoMoveItemsEnabled");
+CharacterStatusText(_PartyMember, "LLPARTY_StatusText_AutoMoveItemsEnabled");
+
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_SetAutoMoveAllItemsOnSelectedPlayer", (CHARACTERGUID)_Player, _Instance)
+AND
+ObjectGetFlag(_Player, "LLPARTY_PartyManagement_SetAutoMoveAllItemsOnSelectedPlayer", 1)
+THEN
+CharacterStatusText(_Player, "LLPARTY_StatusText_NoPlayerSelectedError");
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_SetAutoMoveAllItemsOnSelectedPlayer", _Instance);
+
+//END_REGION
+
 IF
 ObjectFlagSet("LLPARTY_PartyManagement_ClearData", (CHARACTERGUID)_Player, _Instance)
 THEN
