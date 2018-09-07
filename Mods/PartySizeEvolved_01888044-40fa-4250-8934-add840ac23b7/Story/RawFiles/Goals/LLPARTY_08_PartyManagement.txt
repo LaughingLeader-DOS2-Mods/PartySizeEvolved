@@ -1,0 +1,280 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+LLPARTY_PartyManagement_InitSettings();
+KBSECTION
+
+PROC
+LLPARTY_PartyManagement_InitSettings()
+THEN
+DB_LLPARTY_PartyManagement_CharacterVars(1, "LLPARTY_PartyManagement_Character01_72d4befd-4bf2-4d38-bf2c-449bb2b79874", "LLPARTY_PartyManagement_IsAvailable_Character01", "LLPARTY_PartyManagement_Selected_Character01");
+DB_LLPARTY_PartyManagement_CharacterVars(2, "LLPARTY_PartyManagement_Character02_ffbe52fe-b6df-4dac-be22-fe06aba5187c", "LLPARTY_PartyManagement_IsAvailable_Character02", "LLPARTY_PartyManagement_Selected_Character02");
+DB_LLPARTY_PartyManagement_CharacterVars(3, "LLPARTY_PartyManagement_Character03_7fa2a5a1-9df7-4d77-87bf-3c094d9d0233", "LLPARTY_PartyManagement_IsAvailable_Character03", "LLPARTY_PartyManagement_Selected_Character03");
+DB_LLPARTY_PartyManagement_CharacterVars(4, "LLPARTY_PartyManagement_Character04_39ddab98-0631-49cc-8688-a297d0b8611d", "LLPARTY_PartyManagement_IsAvailable_Character04", "LLPARTY_PartyManagement_Selected_Character04");
+DB_LLPARTY_PartyManagement_CharacterVars(5, "LLPARTY_PartyManagement_Character05_ee94340a-766e-483a-a593-140fc2fdac11", "LLPARTY_PartyManagement_IsAvailable_Character05", "LLPARTY_PartyManagement_Selected_Character05");
+DB_LLPARTY_PartyManagement_CharacterVars(6, "LLPARTY_PartyManagement_Character06_19311be2-b1cd-4c15-9159-db9c80c711e9", "LLPARTY_PartyManagement_IsAvailable_Character06", "LLPARTY_PartyManagement_Selected_Character06");
+DB_LLPARTY_PartyManagement_CharacterVars(7, "LLPARTY_PartyManagement_Character07_382ce228-e5f0-4e6d-a91d-880b3e38da10", "LLPARTY_PartyManagement_IsAvailable_Character07", "LLPARTY_PartyManagement_Selected_Character07");
+DB_LLPARTY_PartyManagement_CharacterVars(8, "LLPARTY_PartyManagement_Character08_019033bb-1e5a-4ba4-bfcd-d8616afd8621", "LLPARTY_PartyManagement_IsAvailable_Character08", "LLPARTY_PartyManagement_Selected_Character08");
+DB_LLPARTY_PartyManagement_CharacterVars(9, "LLPARTY_PartyManagement_Character09_83990cbf-8d7c-4b84-9d9f-a0a0aec17d90", "LLPARTY_PartyManagement_IsAvailable_Character09", "LLPARTY_PartyManagement_Selected_Character09");
+DB_LLPARTY_PartyManagement_CharacterVars(10, "LLPARTY_PartyManagement_Character10_c999b4aa-0c4e-4862-a239-95d59420d480", "LLPARTY_PartyManagement_IsAvailable_Character10", "LLPARTY_PartyManagement_Selected_Character10");
+
+
+DB_LLPARTY_PartyManagement_UserVars(1, "LLPARTY_PartyManagement_User01_9bef1cdd-0398-4f3e-9feb-6c5650ba9ce7", "LLPARTY_PartyManagement_IsAvailable_User01", "LLPARTY_PartyManagement_Selected_User01");
+DB_LLPARTY_PartyManagement_UserVars(2, "LLPARTY_PartyManagement_User02_d4c70a51-cb99-434e-b164-307651661f5e", "LLPARTY_PartyManagement_IsAvailable_User02", "LLPARTY_PartyManagement_Selected_User02");
+DB_LLPARTY_PartyManagement_UserVars(3, "LLPARTY_PartyManagement_User03_4914df17-9191-4fe6-a83a-2246247b77a1", "LLPARTY_PartyManagement_IsAvailable_User03", "LLPARTY_PartyManagement_Selected_User03");
+
+//REGION PARTY_SELECTION
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_LoadOwnedCharacters", (CHARACTERGUID)_Player, _Instance)
+THEN
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_LoadOwnedCharacters", _Instance);
+LLPARTY_PartyManagement_LoadParty(_Player, _Instance);
+
+PROC
+LLPARTY_PartyManagement_LoadParty((CHARACTERGUID)_Player, (INTEGER)_Instance)
+AND
+DB_LLPARTY_PartyManagement_CharacterVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+THEN
+ObjectClearFlag(_Player, _AvailableFlag, _Instance);
+ObjectClearFlag(_Player, _SelectedFlag, _Instance);
+DialogSetVariableStringForInstance(_Instance, _DialogVar, "[Unassigned]");
+
+PROC
+LLPARTY_PartyManagement_LoadParty((CHARACTERGUID)_Player, (INTEGER)_Instance)
+AND
+DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember);
+
+PROC
+LLPARTY_PartyManagement_LoadParty((CHARACTERGUID)_Player, (INTEGER)_Instance)
+AND
+CharacterGetReservedUserID(_Player, _UserID)
+AND
+DB_LLPARTY_PartyManagement_CharacterVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+AND
+DB_IsPlayer(_PartyMember)
+AND
+NOT DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _)
+AND
+CharacterGetReservedUserID(_PartyMember, _UserID)
+AND
+CharacterGetDisplayName(_PartyMember, _, _Name)
+THEN
+DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember);
+DialogSetVariableStringForInstance(_Instance, _DialogVar, _Name);
+
+IF
+ObjectFlagSet(_SelectedFlag, (CHARACTERGUID)_Player, _Instance)
+AND
+DB_LLPARTY_PartyManagement_CharacterVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+THEN
+ObjectClearFlag(_Player, _SelectedFlag, _Instance);
+LLPARTY_PartyManagement_SelectPartyMember(_Player, _Instance, _Index);
+
+PROC
+LLPARTY_PartyManagement_SelectPartyMember((CHARACTERGUID)_Player, (INTEGER)_Instance, (INTEGER)_Index)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember);
+
+PROC
+LLPARTY_PartyManagement_SelectPartyMember((CHARACTERGUID)_Player, (INTEGER)_Instance, (INTEGER)_Index)
+AND
+DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember)
+THEN
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember);
+
+IF
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+AND
+_Player == _PartyMember
+THEN
+ObjectSetFlag(_Player, "LLPARTY_PartyManagement_SelectedCharacterIsControlled", _Instance);
+
+IF
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+AND
+_Player != _PartyMember
+THEN
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_SelectedCharacterIsControlled", _Instance);
+
+IF
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+AND
+CharacterGetDisplayName(_PartyMember, _, _Name)
+THEN
+DialogSetVariableStringForInstance(_Instance, "LLPARTY_PartyManagement_SelectedCharacter_4be2a6a0-6569-40f2-ae42-32cef8dca19a", _Name);
+
+PROC
+LLPARTY_PartyManagement_ClearData((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember);
+
+PROC
+LLPARTY_PartyManagement_ClearData((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember);
+
+PROC
+LLPARTY_PartyManagement_ClearData((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_PartyManagement_CharacterVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+THEN
+ObjectClearFlag(_Player, _AvailableFlag, 0);
+ObjectClearFlag(_Player, _SelectedFlag, 0);
+//END_REGION
+
+//REGION USER_SELECTION
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_LoadUsers", (CHARACTERGUID)_Player, _Instance)
+THEN
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_LoadUsers", _Instance);
+LLPARTY_PartyManagement_LoadUsers(_Player, _Instance);
+
+PROC
+LLPARTY_PartyManagement_LoadUsers((CHARACTERGUID)_Player, (INTEGER)_Instance)
+AND
+DB_LLPARTY_PartyManagement_UserVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+THEN
+ObjectClearFlag(_Player, _AvailableFlag, _Instance);
+ObjectClearFlag(_Player, _SelectedFlag, _Instance);
+DialogSetVariableStringForInstance(_Instance, _DialogVar, "[Unassigned]");
+
+PROC
+LLPARTY_PartyManagement_LoadUsers((CHARACTERGUID)_Player, (INTEGER)_Instance)
+AND
+DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _UserID)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _UserID);
+
+PROC
+LLPARTY_PartyManagement_LoadUsers((CHARACTERGUID)_Player, (INTEGER)_Instance)
+AND
+CharacterGetReservedUserID(_Player, _UserID)
+AND
+DB_LLPARTY_PartyManagement_UserVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+AND
+DB_IsPlayer(_PartyMember)
+AND
+NOT DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _)
+AND
+CharacterGetReservedUserID(_PartyMember, _OtherUserID)
+AND
+_UserID != _OtherUserID
+AND
+GetUserName(_OtherUserID, _Username)
+THEN
+DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _OtherUserID);
+DialogSetVariableStringForInstance(_Instance, _DialogVar, _Username);
+
+IF
+ObjectFlagSet(_SelectedFlag, (CHARACTERGUID)_Player, _Instance)
+AND
+DB_LLPARTY_PartyManagement_UserVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+THEN
+ObjectClearFlag(_Player, _SelectedFlag, _Instance);
+LLPARTY_PartyManagement_SelectUser(_Player, _Instance, _Index);
+
+PROC
+LLPARTY_PartyManagement_SelectUser((CHARACTERGUID)_Player, (INTEGER)_Instance, (INTEGER)_Index)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID);
+
+PROC
+LLPARTY_PartyManagement_SelectUser((CHARACTERGUID)_Player, (INTEGER)_Instance, (INTEGER)_Index)
+AND
+DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _UserID)
+THEN
+DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID);
+
+IF
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+AND
+CharacterGetDisplayName(_PartyMember, _, _Name)
+THEN
+DialogSetVariableStringForInstance(_Instance, "LLPARTY_PartyManagement_SelectedCharacter_4be2a6a0-6569-40f2-ae42-32cef8dca19a", _Name);
+
+IF
+UserDisconnected(_UserID, _UserName, _UserProfileID)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID);
+ObjectSetFlag(_Player, "LLPARTY_PartyManagement_SelectedUserDisconnected", _Instance);
+
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_ConfirmCharacterTransfer", (CHARACTERGUID)_Player, _Instance)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID)
+AND
+GetUserProfileID(_UserID, _UserProfileID)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember);
+NOT DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID);
+CharacterAssignToUser(_UserID, _PartyMember);
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_ConfirmCharacterTransfer", _Instance);
+CharacterStatusText(_Player, "<font color='#00FF00'>Character Transfer Successful</font>");
+
+IF
+ObjectFlagSet("LLPARTY_PartyManagement_ConfirmCharacterTransfer", (CHARACTERGUID)_Player, _Instance)
+AND
+ObjectGetFlag(_Player, "LLPARTY_PartyManagement_ConfirmCharacterTransfer", 1)
+THEN
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_ConfirmCharacterTransfer", _Instance);
+CharacterStatusText(_Player, "<font color='#FF0000'>Character Transfer Failed</font>");
+
+PROC
+LLPARTY_PartyManagement_ClearData((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_SelectedUser(_Player, _Instance, _UserID);
+
+PROC
+LLPARTY_PartyManagement_ClearData((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _UserID)
+THEN
+NOT DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _UserID);
+
+PROC
+LLPARTY_PartyManagement_ClearData((CHARACTERGUID)_Player)
+AND
+DB_LLPARTY_PartyManagement_UserVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+THEN
+ObjectClearFlag(_Player, _AvailableFlag, 0);
+ObjectClearFlag(_Player, _SelectedFlag, 0);
+//END_REGION
+
+IF
+DialogEnded("LLPARTY_SettingsMenu", _Instance)
+AND
+DialogGetInvolvedPlayer(_Instance, 1, _Player)
+THEN
+LLPARTY_PartyManagement_ClearData(_Player);
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_SelectedCharacterIsControlled", _Instance);
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_SelectedUserDisconnected", _Instance);
+ObjectClearFlag(_Player, "LLPARTY_PartyManagement_ConfirmCharacterTransfer", _Instance);
+
+IF
+SavegameLoaded(_,_,_,_)
+AND
+DB_DialogName("LLPARTY_SettingsMenu", _Instance)
+AND
+DB_DialogPlayers(_Instance, _Player, _)
+THEN
+DialogRequestStopForDialog("LLPARTY_SettingsMenu", _Player);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

@@ -30,6 +30,16 @@ StringConcatenate("PDD_Player", _IndexStr, _Tag)
 THEN
 DB_LLPARTY_Temp_NextTag(_Script, _PlayerIndex, _Tag);
 
+QRY
+LLPARTY_QRY_ClearGlobalFlag((STRING)_Flag)
+THEN
+GlobalClearFlag(_Flag);
+
+QRY
+LLPARTY_QRY_ClearObjectFlag((GUIDSTRING)_Object, (STRING)_Flag)
+THEN
+ObjectClearFlag(_Object, _Flag, 0);
+
 //REGION LOGGING
 PROC
 LLPARTY_Log((STRING)_Str1)
