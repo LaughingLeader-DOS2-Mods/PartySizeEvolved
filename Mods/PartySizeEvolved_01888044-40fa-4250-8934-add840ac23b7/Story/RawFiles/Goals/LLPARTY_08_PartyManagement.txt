@@ -51,18 +51,57 @@ LLPARTY_PartyManagement_LoadParty((CHARACTERGUID)_Player, (INTEGER)_Instance)
 AND
 CharacterGetReservedUserID(_Player, _UserID)
 AND
-DB_LLPARTY_PartyManagement_CharacterVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
-AND
 DB_IsPlayer(_PartyMember)
-AND
-NOT DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _)
 AND
 CharacterGetReservedUserID(_PartyMember, _UserID)
 AND
+DB_LLPARTY_PartyManagement_CharacterVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+AND
+NOT LLPARTY_PartyManagement_QRY_PartyMemberAssignedToIndex(_Index, _Instance, _Player, _PartyMember)
+AND
 CharacterGetDisplayName(_PartyMember, _, _Name)
+AND
+LLPARTY_PartyManagement_QRY_CorrectEmptyName(_PartyMember, _Name, _Index)
+AND
+DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Str)
 THEN
+NOT DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Str);
+LLPARTY_Log("Added ", _Str);
 DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember);
-DialogSetVariableStringForInstance(_Instance, _DialogVar, _Name);
+ObjectSetFlag(_Player, _AvailableFlag, _Instance);
+DialogSetVariableStringForInstance(_Instance, _DialogVar, _Str);
+
+QRY
+LLPARTY_PartyManagement_QRY_PartyMemberAssignedToIndex((INTEGER)_Index, (INTEGER)_Instance, (CHARACTERGUID)_Player, (CHARACTERGUID)_PartyMember)
+AND
+DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _)
+THEN
+DB_NOOP(1);
+
+QRY
+LLPARTY_PartyManagement_QRY_PartyMemberAssignedToIndex((INTEGER)_Index, (INTEGER)_Instance, (CHARACTERGUID)_Player, (CHARACTERGUID)_PartyMember)
+AND
+DB_LLPARTY_PartyManagement_Temp_CharacterList(_, _Instance, _Player, _PartyMember)
+THEN
+DB_NOOP(1);
+
+QRY
+LLPARTY_PartyManagement_QRY_CorrectEmptyName((CHARACTERGUID)_PartyMember, (STRING)_Name, (INTEGER)_Index)
+AND
+_Name == ""
+AND
+IntegertoString(_Index, _IndexStr)
+AND
+StringConcatenate("Player", _IndexStr, _Str)
+THEN
+DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Str);
+
+QRY
+LLPARTY_PartyManagement_QRY_CorrectEmptyName((CHARACTERGUID)_PartyMember, (STRING)_Name, (INTEGER)_Index)
+AND
+_Name != ""
+THEN
+DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Name);
 
 IF
 ObjectFlagSet(_SelectedFlag, (CHARACTERGUID)_Player, _Instance)
@@ -83,29 +122,31 @@ PROC
 LLPARTY_PartyManagement_SelectPartyMember((CHARACTERGUID)_Player, (INTEGER)_Instance, (INTEGER)_Index)
 AND
 DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember)
+AND
+CharacterGetDisplayName(_PartyMember, _, _Name)
+AND
+LLPARTY_PartyManagement_QRY_CorrectEmptyName(_PartyMember, _Name, _Index)
+AND
+DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Str)
 THEN
+NOT DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Str);
+DialogSetVariableStringForInstance(_Instance, "LLPARTY_PartyManagement_SelectedCharacter_4be2a6a0-6569-40f2-ae42-32cef8dca19a", _Str);
 DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember);
+LLPARTY_PartyManagement_CheckPlayerMatch(_Player, _PartyMember, _Instance);
 
-IF
-DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+PROC
+LLPARTY_PartyManagement_CheckPlayerMatch((CHARACTERGUID)_Player, (CHARACTERGUID)_PartyMember, (INTEGER)_Instance)
 AND
 _Player == _PartyMember
 THEN
 ObjectSetFlag(_Player, "LLPARTY_PartyManagement_SelectedCharacterIsControlled", _Instance);
 
-IF
-DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
+PROC
+LLPARTY_PartyManagement_CheckPlayerMatch((CHARACTERGUID)_Player, (CHARACTERGUID)_PartyMember, (INTEGER)_Instance)
 AND
 _Player != _PartyMember
 THEN
 ObjectClearFlag(_Player, "LLPARTY_PartyManagement_SelectedCharacterIsControlled", _Instance);
-
-IF
-DB_LLPARTY_PartyManagement_Temp_SelectedPartyMember(_Player, _Instance, _PartyMember)
-AND
-CharacterGetDisplayName(_PartyMember, _, _Name)
-THEN
-DialogSetVariableStringForInstance(_Instance, "LLPARTY_PartyManagement_SelectedCharacter_4be2a6a0-6569-40f2-ae42-32cef8dca19a", _Name);
 
 PROC
 LLPARTY_PartyManagement_ClearData((CHARACTERGUID)_Player)
@@ -158,20 +199,35 @@ LLPARTY_PartyManagement_LoadUsers((CHARACTERGUID)_Player, (INTEGER)_Instance)
 AND
 CharacterGetReservedUserID(_Player, _UserID)
 AND
-DB_LLPARTY_PartyManagement_UserVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
-AND
 DB_IsPlayer(_PartyMember)
-AND
-NOT DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _)
 AND
 CharacterGetReservedUserID(_PartyMember, _OtherUserID)
 AND
+DB_LLPARTY_PartyManagement_UserVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
+AND
 _UserID != _OtherUserID
+AND
+NOT LLPARTY_PartyManagement_QRY_UserAssignedToIndex(_Index, _Instance, _Player, _OtherUserID)
 AND
 GetUserName(_OtherUserID, _Username)
 THEN
+ObjectSetFlag(_Player, _AvailableFlag, _Instance);
 DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _OtherUserID);
 DialogSetVariableStringForInstance(_Instance, _DialogVar, _Username);
+
+QRY
+LLPARTY_PartyManagement_QRY_UserAssignedToIndex((INTEGER)_Index, (INTEGER)_Instance, (CHARACTERGUID)_Player, (INTEGER)_UserID)
+AND
+DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _)
+THEN
+DB_NOOP(1);
+
+QRY
+LLPARTY_PartyManagement_QRY_UserAssignedToIndex((INTEGER)_Index, (INTEGER)_Instance, (CHARACTERGUID)_Player, (INTEGER)_UserID)
+AND
+DB_LLPARTY_PartyManagement_Temp_UserList(_, _Instance, _Player, _UserID)
+THEN
+DB_NOOP(1);
 
 IF
 ObjectFlagSet(_SelectedFlag, (CHARACTERGUID)_Player, _Instance)
@@ -259,7 +315,7 @@ ObjectClearFlag(_Player, _SelectedFlag, 0);
 IF
 DialogEnded("LLPARTY_SettingsMenu", _Instance)
 AND
-DialogGetInvolvedPlayer(_Instance, 1, _Player)
+DialogGetInvolvedPlayer(_Instance, 1, (CHARACTERGUID)_Player)
 THEN
 LLPARTY_PartyManagement_ClearData(_Player);
 ObjectClearFlag(_Player, "LLPARTY_PartyManagement_SelectedCharacterIsControlled", _Instance);

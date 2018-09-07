@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterJoinedParty(_Character)
+AND
+CharacterIsPlayer(_Character, 1)
+AND
+NOT DB_IsPlayer(_Character)
+THEN
+DB_IsPlayer(_Character);
+
+IF
+DB_IsPlayer(_Character)
+AND
+Random(99, _Ran)
+AND
+IntegertoString(_Ran, _RanStr)
+AND
+StringConcatenate("Player", _RanStr, _Str)
+THEN
+CharacterSetCustomName(_Character, _Str);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

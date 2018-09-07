@@ -12,6 +12,8 @@ Editor/Mods/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/Levels/*
 ######################
 *.div
 *.raw
+Mods/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/Story/Dialogs/AutoSave/*
+Mods/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/Story/Dialogs/Recovered/*
 
 # Asset Folders      #
 ######################
