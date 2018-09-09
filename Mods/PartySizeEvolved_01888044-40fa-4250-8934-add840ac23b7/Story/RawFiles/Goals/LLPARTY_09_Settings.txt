@@ -169,9 +169,19 @@ DialogSetVariableInt("LLPARTY_SettingsMenu", "LLPARTY_MaxPartySize_6e79a6d2-a814
 IF
 DialogStarted("LLPARTY_SettingsMenu", _Instance)
 AND
+DialogGetInvolvedPlayer(_Instance, 1, (CHARACTERGUID)_Player)
+AND
 CharacterGetHostCharacter(_Host)
+AND
+CharacterGetReservedUserID(_Player, _UserID)
+AND
+CharacterGetReservedUserID(_Host, _HostUserID)
+AND
+GetUserProfileID(_HostUserID, _ProfileID)
+AND
+GetUserProfileID(_UserID, _ProfileID)
 THEN
-UserSetFlag(_Host, "LLPARTY_IsHost", _Instance);
+ObjectSetFlag(_Player, "LLPARTY_IsHost", _Instance);
 LLPARTY_Settings_UpdateDialogVars();
 
 IF
@@ -186,9 +196,9 @@ ObjectSetFlag(_Player, "LLPARTY_DefaultMaxPartySizeIsSet");
 IF
 DialogEnded("LLPARTY_SettingsMenu", _Instance)
 AND
-CharacterGetHostCharacter(_Host)
+DialogGetInvolvedPlayer(_Instance, 1, (CHARACTERGUID)_Player)
 THEN
-UserClearFlag(_Host, "LLPARTY_IsHost", _Instance);
+ObjectSetFlag(_Player, "LLPARTY_IsHost", _Instance);
 
 IF
 DialogEnded("LLPARTY_SettingsMenu", _Instance)

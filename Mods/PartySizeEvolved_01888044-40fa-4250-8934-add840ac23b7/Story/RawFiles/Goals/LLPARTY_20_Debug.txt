@@ -3,27 +3,15 @@ SubGoalCombiner SGC_AND
 INITSECTION
 
 KBSECTION
+IF
+GameModeStarted(_, 1)
+THEN
+GoalCompleted;
 
 IF
-CharacterJoinedParty(_Character)
-AND
-CharacterIsPlayer(_Character, 1)
-AND
-NOT DB_IsPlayer(_Character)
+GameStarted(_, 1)
 THEN
-DB_IsPlayer(_Character);
-
-IF
-DB_IsPlayer(_Character)
-AND
-Random(99, _Ran)
-AND
-IntegertoString(_Ran, _RanStr)
-AND
-StringConcatenate("Player", _RanStr, _Str)
-THEN
-CharacterSetCustomName(_Character, _Str);
-
+GoalCompleted;
 EXITSECTION
 
 ENDEXITSECTION

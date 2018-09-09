@@ -34,6 +34,16 @@ LLPARTY_Updater_VersionChanged((STRING)_OldVersion, (STRING)_NewVersion)
 THEN
 DB_NOOP(1);
 
+//Debug script fix
+PROC
+LLPARTY_Updater_VersionChanged("1.1.0.0", (STRING)_NewVersion)
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterGetDisplayName(_Player, _, _Name)
+THEN
+CharacterSetCustomName(_Player, _Name);
+
 PROC
 LLPARTY_Updater_SetVersion((STRING)_Version)
 AND

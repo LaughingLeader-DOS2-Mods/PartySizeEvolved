@@ -3,7 +3,6 @@ SubGoalCombiner SGC_AND
 INITSECTION
 LLPARTY_PartyManagement_InitSettings();
 KBSECTION
-
 PROC
 LLPARTY_PartyManagement_InitSettings()
 THEN
@@ -28,19 +27,11 @@ IF
 ObjectFlagSet("LLPARTY_PartyManagement_LoadOwnedCharacters", (CHARACTERGUID)_Player, _Instance)
 THEN
 ObjectClearFlag(_Player, "LLPARTY_PartyManagement_LoadOwnedCharacters", _Instance);
+LLPARTY_PartyManagement_ClearList(_Player, _Instance);
 LLPARTY_PartyManagement_LoadParty(_Player, _Instance);
 
 PROC
-LLPARTY_PartyManagement_LoadParty((CHARACTERGUID)_Player, (INTEGER)_Instance)
-AND
-DB_LLPARTY_PartyManagement_CharacterVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
-THEN
-ObjectClearFlag(_Player, _AvailableFlag, _Instance);
-ObjectClearFlag(_Player, _SelectedFlag, _Instance);
-DialogSetVariableStringForInstance(_Instance, _DialogVar, "[Unassigned]");
-
-PROC
-LLPARTY_PartyManagement_LoadParty((CHARACTERGUID)_Player, (INTEGER)_Instance)
+LLPARTY_PartyManagement_ClearList((CHARACTERGUID)_Player, (INTEGER)_Instance)
 AND
 DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember)
 THEN
@@ -66,9 +57,8 @@ AND
 DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Str)
 THEN
 NOT DB_LLPARTY_PartyManagement_Temp_DisplayName(_PartyMember, _Str);
-LLPARTY_Log("Added ", _Str);
 DB_LLPARTY_PartyManagement_Temp_CharacterList(_Index, _Instance, _Player, _PartyMember);
-ObjectSetFlag(_Player, _AvailableFlag, _Instance);
+ObjectSetFlag(_Player, _AvailableFlag);
 DialogSetVariableStringForInstance(_Instance, _DialogVar, _Str);
 
 QRY
@@ -176,19 +166,11 @@ IF
 ObjectFlagSet("LLPARTY_PartyManagement_LoadUsers", (CHARACTERGUID)_Player, _Instance)
 THEN
 ObjectClearFlag(_Player, "LLPARTY_PartyManagement_LoadUsers", _Instance);
+LLPARTY_PartyManagement_ClearUserList(_Player, _Instance);
 LLPARTY_PartyManagement_LoadUsers(_Player, _Instance);
 
 PROC
-LLPARTY_PartyManagement_LoadUsers((CHARACTERGUID)_Player, (INTEGER)_Instance)
-AND
-DB_LLPARTY_PartyManagement_UserVars(_Index, _DialogVar, _AvailableFlag, _SelectedFlag)
-THEN
-ObjectClearFlag(_Player, _AvailableFlag, _Instance);
-ObjectClearFlag(_Player, _SelectedFlag, _Instance);
-DialogSetVariableStringForInstance(_Instance, _DialogVar, "[Unassigned]");
-
-PROC
-LLPARTY_PartyManagement_LoadUsers((CHARACTERGUID)_Player, (INTEGER)_Instance)
+LLPARTY_PartyManagement_ClearUserList((CHARACTERGUID)_Player, (INTEGER)_Instance)
 AND
 DB_LLPARTY_PartyManagement_Temp_UserList(_Index, _Instance, _Player, _UserID)
 THEN
