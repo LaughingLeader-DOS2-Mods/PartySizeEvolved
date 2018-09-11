@@ -235,10 +235,16 @@ Proc_StartDialog(0, "LLPARTY_SettingsMenu", _Player, _Player);
 //END_REGION
 
 //REGION ADD_EVENTS
+//Multiplayer lobby error
+PROC
+LLPARTY_Updater_VersionChanged("1.0.0.0", "1.1.1.0")
+THEN
+GlobalClearFlag("LLPARTY_AddedInitialBook");
+
 IF
 GameStarted(_Level,_)
 AND
-IsCharacterCreationLevel(_Level, 0)
+IsGameLevel(_Level, 1)
 AND
 NOT GlobalGetFlag("LLPARTY_AddedInitialBook", 1)
 THEN
@@ -253,6 +259,16 @@ AND
 ItemTemplateIsInPartyInventory(_Host, "BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", 0, 0)
 THEN
 ItemTemplateAddTo("BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", _Host, 1, 1);
+
+IF
+TimerFinished("LLPARTY_Timers_MenuBookCheck")
+AND
+CharacterGetHostCharacter(_Host)
+AND
+ItemTemplateIsInPartyInventory(_Host, "BOOK_LLPARTY_SettingsMenu_a72cac8f-499b-4822-81ab-62b78b487ea0", 0, _Count)
+AND
+_Count > 0
+THEN
 GlobalSetFlag("LLPARTY_AddedInitialBook");
 //END_REGION
 

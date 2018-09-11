@@ -4,7 +4,7 @@ INITSECTION
 DB_LLPARTY_MaxPartySize(6);
 KBSECTION
 IF
-RegionStarted(_)
+RegionStarted(_Level)
 AND
 NOT GlobalGetFlag("LLPARTY_InitializedExpandedParty", 1)
 THEN
@@ -40,7 +40,11 @@ THEN
 NOT DB_LLPARTY_GameStarted(_Val);
 
 IF
-GameStarted(_,_)
+GameStarted(_Level, _)
+AND
+IsCharacterCreationLevel(_Level, 0)
+AND
+IsGameLevel(_Level, 1)
 AND
 NOT DB_LLPARTY_GameStarted(_)
 THEN
