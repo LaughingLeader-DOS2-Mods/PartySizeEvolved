@@ -24,6 +24,20 @@ AND
 StringConcatenate("Player", _RanStr, _Str)
 THEN
 CharacterSetCustomName(_Character, _Str);
+
+IF
+TextEventSet("llparty_rcrd1")
+AND
+CharacterGetHostCharacter(_Player)
+THEN
+ProcDefineReflectionDialog("RC_GY_RD_Godslayer_PostTombDialog",_Player);
+
+IF
+TextEventSet("llparty_rcrd2")
+AND
+CharacterGetHostCharacter(_Player)
+THEN
+ProcDefineReflectionDialog("RC_DW_RD_Meistr_AfterArtefact", _Player);
 EXITSECTION
 
 ENDEXITSECTION

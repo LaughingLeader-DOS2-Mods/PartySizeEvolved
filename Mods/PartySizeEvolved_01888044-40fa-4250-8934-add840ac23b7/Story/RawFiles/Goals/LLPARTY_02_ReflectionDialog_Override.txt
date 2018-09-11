@@ -6,7 +6,7 @@ KBSECTION
 //Phases of a Reflection dialog:
 //1) Exclamation marks above all players head
 //2) Talking to each other starts reflection dialog with anyone near.
-//3) Player 1-4 choose one of max eight options (A-H).
+//3) Player 1-10 choose one of max eight options (A-H).
 //4) If all nearby players have chosen, it ends.
 
 IF
@@ -302,7 +302,6 @@ THEN
 NOT DB_ReflectionDialog_PlayerCount(_ReflectionDialogName,_Count);
 //END_REGION
 
-
 //REGION Phase 1
 PROC
 Proc_ReflectionDialog_Phase1((CHARACTERGUID)_Player1,(STRING)_ReflectionDialogName)
@@ -445,7 +444,6 @@ DB_ReflectionDialog_Phase1_Index(_NewIndex);
 ObjectClearFlag(_Player,"GLO_IsLastPlayerInReflectionDialog",0);
 Proc_ReflectionDialog_Phase1_NextPlayer(_ReflectionDialogName,_NewIndex);
 //END_REGION
-
 
 //REGION Remove individual from an RD
 // First count how many people are left for the RD: if only one is left after this player,

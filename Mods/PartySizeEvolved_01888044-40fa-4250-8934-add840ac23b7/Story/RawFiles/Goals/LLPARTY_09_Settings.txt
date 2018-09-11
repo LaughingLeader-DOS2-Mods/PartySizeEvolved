@@ -237,7 +237,7 @@ Proc_StartDialog(0, "LLPARTY_SettingsMenu", _Player, _Player);
 //REGION ADD_EVENTS
 //Multiplayer lobby error
 PROC
-LLPARTY_Updater_VersionChanged("1.0.0.0", "1.1.1.0")
+LLPARTY_Updater_VersionChanged((STRING)_OldVersion, "1.1.1.0")
 THEN
 GlobalClearFlag("LLPARTY_AddedInitialBook");
 

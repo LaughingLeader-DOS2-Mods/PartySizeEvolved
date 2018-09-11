@@ -4,13 +4,13 @@ INITSECTION
 
 KBSECTION
 //REGION INSTALL
-
 PROC
 LLPARTY_InstallMod()
 AND
 SysIsActive("_GLOBAL_Shared_ReflectionDialog")
 THEN
 SysCompleteGoal("_GLOBAL_Shared_ReflectionDialog");
+GlobalSetFlag("LLPARTY_DisabledSharedRDGoal");
 
 PROC
 LLPARTY_InstallMod()
@@ -63,6 +63,52 @@ THEN
 DebugBreak(_Str2);
 //END_REGION
 
+IF
+GameStarted(_,_)
+AND
+NOT GlobalGetFlag("LLPARTY_DisabledSharedRDGoal", 1)
+AND
+NOT SysIsActive("_GLOBAL_Shared_ReflectionDialog")
+THEN
+GlobalSetFlag("LLPARTY_DisabledSharedRDGoal");
+
+//Just incase it's still active
+IF
+GameStarted(_,_)
+AND
+GlobalGetFlag("LLPARTY_DisabledSharedRDGoal", 1)
+AND
+SysIsActive("_GLOBAL_Shared_ReflectionDialog")
+THEN
+SysCompleteGoal("_GLOBAL_Shared_ReflectionDialog");
+LLPARTY_Log("[LLPARTY:RD_Setup:GameStarted] [WARNING] [_GLOBAL_Shared_ReflectionDialog] was active for some reason! Completed goal.");
+
+IF
+GameStarted(_,_)
+AND
+NOT SysIsActive("_GLOBAL_Shared_ReflectionDialog")
+AND
+NOT GlobalGetFlag("GLO_DisableReflectionsPermanently", 1)
+AND
+NOT SysIsActive("LLPARTY_02_ReflectionDialog_Override")
+THEN
+SysActivateGoal("LLPARTY_02_ReflectionDialog_Override");
+LLPARTY_Log("[LLPARTY:RD_Setup:GameStarted] [ERROR] [LLPARTY_02_ReflectionDialog_Override] was inactive for some reason! Activated goal.");
+
+IF
+GlobalFlagCleared("GLO_DisableReflectionsPermanently")
+AND
+SysIsActive("_GLOBAL_Shared_ReflectionDialog")
+THEN
+SysCompleteGoal("_GLOBAL_Shared_ReflectionDialog");
+
+IF
+GlobalFlagCleared("GLO_DisableReflectionsPermanently")
+AND
+NOT SysIsActive("LLPARTY_02_ReflectionDialog_Override")
+THEN
+SysActivateGoal("LLPARTY_02_ReflectionDialog_Override");
+
 //REGION UNINSTALL
 PROC
 LLPARTY_UninstallMod()
@@ -79,14 +125,8 @@ AND
 NOT SysIsActive("_GLOBAL_Shared_ReflectionDialog")
 THEN
 SysActivateGoal("_GLOBAL_Shared_ReflectionDialog");
+GlobalClearFlag("LLPARTY_DisabledSharedRDGoal");
 //END_REGION
-
-IF
-GlobalFlagCleared("GLO_DisableReflectionsPermanently")
-AND
-NOT SysIsActive("LLPARTY_02_ReflectionDialog_Override")
-THEN
-SysActivateGoal("LLPARTY_02_ReflectionDialog_Override");
 EXITSECTION
 
 ENDEXITSECTION
