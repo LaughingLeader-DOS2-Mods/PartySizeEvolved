@@ -1,5 +1,10 @@
 Party Size Evolved Changelog
 =======
+# 1.2.0.0
+* Fix for the romance dialog after the Arena of the One not including all Origin companions. All companions should now participate:  
+[![Lady Vengeance Romance Dialog](https://i.imgur.com/j35tITSl.jpg)](https://i.imgur.com/j35tITS.png)
+  * Originally this dialog was only designed for 1 player and 3 companions. I had to edit the dialog to add in the other 3 potential companions, and add a bit of scripting to get those extra companions to move into place / be added to the dialog when it starts.
+
 # 1.1.1.0
 * Added some safety checks for preventing the original Reflection Dialog script from re-activating.
 
