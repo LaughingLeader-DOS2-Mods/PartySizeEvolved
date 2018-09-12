@@ -3,7 +3,6 @@ SubGoalCombiner SGC_AND
 INITSECTION
 
 KBSECTION
-
 //Redefine the trigger cluster DB, so companions stand in the dialog spot for romance
 /*
 PROC
@@ -130,12 +129,11 @@ AND
 NOT DB_LLPARTY_CoSLV_Temp_Moving(_Companion)
 THEN
 NOT DB_LLPARTY_CoSLV_ExtraTriggerPosition(_Trigger, _x, _y, _z);
-//ProcCharacterMoveTo(_Companion, TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14,0,"CoS_HoE_LadyVengeance_OriginAtRomanceWaitingPoint");
-CharacterMoveToPosition(_Companion, _x, _y, _z, 0, "CoS_HoE_LadyVengeance_OriginAtRomanceWaitingPoint");
 DB_LLPARTY_CoSLV_Temp_Moving(_Companion);
+CharacterMoveToPosition(_Companion, _x, _y, _z, 0, "CoS_HoE_LadyVengeance_OriginAtRomanceWaitingPoint");
 
-PROC
-ProcObjectTimerFinished((CHARACTERGUID)_Companion, "LLPARTY_Timers_CosLV_WalkToTriggerPosition")
+IF
+StoryEvent((CHARACTERGUID)_Companion,"CoS_HoE_LadyVengeance_OriginAtRomanceWaitingPoint")
 AND
 DB_LLPARTY_CoSLV_Temp_Moving(_Companion)
 THEN
