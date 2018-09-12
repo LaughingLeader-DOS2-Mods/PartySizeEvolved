@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1536750809" />
+    <version major="3" minor="6" revision="0" build="4" />
+    <region id="ScriptFlags">
+        <node id="root">
+            <children>
+                <node id="ScriptFlag">
+                    <attribute id="Description" value="Speaker 1 - 3, 5-6 is Beast" type="23" />
+                    <attribute id="Script" value='CONDITION IsTagged(1,&quot;BEAST&quot;)&#x0D;&#x0A;CONDITION IsTagged(2,&quot;BEAST&quot;)&#x0D;&#x0A;CONDITION IsTagged(3,&quot;BEAST&quot;)&#x0D;&#x0A;CONDITION IsTagged(5,&quot;BEAST&quot;)&#x0D;&#x0A;CONDITION IsTagged(6,&quot;BEAST&quot;)&#x0D;&#x0A;CONDITION IsTagged(7,&quot;BEAST&quot;)&#x0D;&#x0A;CHECK &quot;c1|c2|c3|c4|c5|c6&quot;' type="23" />
+                    <attribute id="UUID" value="9763116a-ca85-409e-ab4d-7b05a4459beb" type="31" />
+                    <attribute id="name" value="LLPARTY_SpeakerIsBeast" type="22" />
+                </node>
+                <node id="ScriptFlag">
+                    <attribute id="Description" value="Speaker 1 - 3, 5-6 is Fane" type="23" />
+                    <attribute id="Script" value='CONDITION IsTagged(1,&quot;FANE&quot;)&#x0D;&#x0A;CONDITION IsTagged(2,&quot;FANE&quot;)&#x0D;&#x0A;CONDITION IsTagged(3,&quot;FANE&quot;)&#x0D;&#x0A;CONDITION IsTagged(5,&quot;FANE&quot;)&#x0D;&#x0A;CONDITION IsTagged(6,&quot;FANE&quot;)&#x0D;&#x0A;CONDITION IsTagged(7,&quot;FANE&quot;)&#x0D;&#x0A;CHECK &quot;c1|c2|c3|c4|c5|c6&quot;' type="23" />
+                    <attribute id="UUID" value="c8636e0f-84f2-4e69-80f6-2054888505e9" type="31" />
+                    <attribute id="name" value="LLPARTY_SpeakerIsFane" type="22" />
+                </node>
+                <node id="ScriptFlag">
+                    <attribute id="Description" value="Speaker 1 - 3, 5-6 is Ifan" type="23" />
+                    <attribute id="Script" value='CONDITION IsTagged(1,&quot;IFAN&quot;)&#x0D;&#x0A;CONDITION IsTagged(2,&quot;IFAN&quot;)&#x0D;&#x0A;CONDITION IsTagged(3,&quot;IFAN&quot;)&#x0D;&#x0A;CONDITION IsTagged(5,&quot;IFAN&quot;)&#x0D;&#x0A;CONDITION IsTagged(6,&quot;IFAN&quot;)&#x0D;&#x0A;CONDITION IsTagged(7,&quot;IFAN&quot;)&#x0D;&#x0A;CHECK &quot;c1|c2|c3|c4|c5|c6&quot;' type="23" />
+                    <attribute id="UUID" value="760d8fe6-bb6d-4e87-b633-44f5cd363f80" type="31" />
+                    <attribute id="name" value="LLPARTY_SpeakerIsIfan" type="22" />
+                </node>
+                <node id="ScriptFlag">
+                    <attribute id="Description" value="Speaker 1 - 3, 5-6 is Lohse" type="23" />
+                    <attribute id="Script" value='CONDITION IsTagged(1,&quot;LOHSE&quot;)&#x0D;&#x0A;CONDITION IsTagged(2,&quot;LOHSE&quot;)&#x0D;&#x0A;CONDITION IsTagged(3,&quot;LOHSE&quot;)&#x0D;&#x0A;CONDITION IsTagged(5,&quot;LOHSE&quot;)&#x0D;&#x0A;CONDITION IsTagged(6,&quot;LOHSE&quot;)&#x0D;&#x0A;CONDITION IsTagged(7,&quot;LOHSE&quot;)&#x0D;&#x0A;CHECK &quot;c1|c2|c3|c4|c5|c6&quot;' type="23" />
+                    <attribute id="UUID" value="891bbed4-8338-4dc4-986b-6e8b27015b01" type="31" />
+                    <attribute id="name" value="LLPARTY_SpeakerIsLohse" type="22" />
+                </node>
+                <node id="ScriptFlag">
+                    <attribute id="Description" value="Speaker 1 - 3, 5-6 is Red Prince" type="23" />
+                    <attribute id="Script" value='CONDITION IsTagged(1,&quot;RED PRINCE&quot;)&#x0D;&#x0A;CONDITION IsTagged(2,&quot;RED PRINCE&quot;)&#x0D;&#x0A;CONDITION IsTagged(3,&quot;RED PRINCE&quot;)&#x0D;&#x0A;CONDITION IsTagged(5,&quot;RED PRINCE&quot;)&#x0D;&#x0A;CONDITION IsTagged(6,&quot;RED PRINCE&quot;)&#x0D;&#x0A;CONDITION IsTagged(7,&quot;RED PRINCE&quot;)&#x0D;&#x0A;CHECK &quot;c1|c2|c3|c4|c5|c6&quot;' type="23" />
+                    <attribute id="UUID" value="e7c120fb-f6d9-40b0-b4f3-acff21f775fd" type="31" />
+                    <attribute id="name" value="LLPARTY_SpeakerIsRedPrince" type="22" />
+                </node>
+                <node id="ScriptFlag">
+                    <attribute id="Description" value="Speaker 1 - 3, 5-6 is Sebille" type="23" />
+                    <attribute id="Script" value='CONDITION IsTagged(1,&quot;SEBILLE&quot;)&#x0D;&#x0A;CONDITION IsTagged(2,&quot;SEBILLE&quot;)&#x0D;&#x0A;CONDITION IsTagged(3,&quot;SEBILLE&quot;)&#x0D;&#x0A;CONDITION IsTagged(5,&quot;SEBILLE&quot;)&#x0D;&#x0A;CONDITION IsTagged(6,&quot;SEBILLE&quot;)&#x0D;&#x0A;CONDITION IsTagged(7,&quot;SEBILLE&quot;)&#x0D;&#x0A;CHECK &quot;c1|c2|c3|c4|c5|c6&quot;' type="23" />
+                    <attribute id="UUID" value="546a948a-a7d1-4f89-8b8e-ec89d6dbb7e2" type="31" />
+                    <attribute id="name" value="LLPARTY_SpeakerIsSebille" type="22" />
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

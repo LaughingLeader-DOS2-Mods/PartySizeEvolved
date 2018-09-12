@@ -1,0 +1,165 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Redefine the trigger cluster DB, so companions stand in the dialog spot for romance
+/*
+PROC
+Proc_CoS_AotO_LoadReturnToLV()
+THEN
+SysClear("DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster", 2);
+DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(0,(TRIGGERGUID)S_CoS_LV_HoE_Companion_1_Cluster_000_dd90e999-0087-4cc4-a032-950cbf448af8);
+DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(0,TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14);
+DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(0,TRIGGERGUID_S_CoS_LV_HoE_Companion_3_Cluster_000_beca2b45-babc-4640-af58-0707fc90c6e2);
+DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(1,TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_001_880bd708-d4fa-4e45-8ceb-2c9422987c50);
+DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(1,TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54);
+DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(1,TRIGGERGUID_S_CoS_LV_HoE_Companion_3_Cluster_001_783bd30c-ce73-437d-a5f9-f561aa980801);
+*/
+
+PROC
+Proc_CoS_AotO_LoadReturnToLV()
+THEN
+LLPARTY_CosLV_InitRomanceFix();
+GlobalSetFlag("LLPARTY_CoS_HoE_LV_RomanceFixInitialized");
+
+PROC
+LLPARTY_CosLV_InitRomanceFix()
+AND
+GetPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _z)
+AND
+RealSum(_z, 1.0, _pz1)
+AND
+RealSum(_pz1, 1.0, _pz2)
+AND
+RealSum(_pz2, 1.0, _pz3)
+THEN
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _pz1);
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _pz2);
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _pz3);
+
+PROC
+LLPARTY_CoSLV_InitRomanceFix()
+AND
+GetPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _z)
+AND
+RealSum(_z, -1.0, _pz1)
+AND
+RealSum(_pz1, -1.0, _pz2)
+AND
+RealSum(_pz2, -1.0, _pz3)
+THEN
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _pz1);
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _pz2);
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _pz3);
+
+//Existing saves on the LV
+IF
+SavegameLoaded(_,_,_,_)
+AND
+DB_GlobalFlag("CoS_AfterArenaOfTheOne")
+AND
+NOT DB_LLPARTY_CoSLV_ExtraTriggerPosition(_, _, _, _)
+AND
+NOT DB_GlobalFlag("LLPARTY_CoS_HoE_LV_RomanceFixInitialized")
+THEN
+GlobalSetFlag("LLPARTY_CoS_HoE_LV_RomanceFixInitialized");
+LLPARTY_CoSLV_InitRomanceFix();
+LLPARTY_CoSLV_UpdatingExistingCompanions();
+
+PROC
+LLPARTY_CoSLV_UpdatingExistingCompanions()
+AND
+DB_CoS_HoE_LadyVengeance_CompanionClusterForAvatar(_Avatar, _Count)
+AND
+NOT ObjectGetFlag(_Avatar, "CoS_DNotS_Ongoing", 1)
+AND
+DB_GLO_PartyMembers_TempRemoved(_Avatar, _Companion)
+AND
+IsTagged(_Companion,"HENCHMAN", 0)
+AND
+DB_CoS_HoE_LadyVengeance_DNotS_SelectionFlag(_Companion, (STRING)_Flag)
+AND
+NOT ObjectGetFlag(_Companion, _Flag, 1)
+AND
+NOT DB_Dialogs(_Companion, _)
+THEN
+LLPARTY_CoSLV_SetupCompanionForTrigger(_Avatar, _Companion, _Count);
+
+PROC
+PROC_CoS_HoE_LadyVengeance_AvatarCompanionSetClusterPoint((CHARACTERGUID)_Avatar, (CHARACTERGUID)_Companion)
+AND
+DB_CoS_HoE_LadyVengeance_CompanionClusterForAvatar(_Avatar, (INTEGER)_Count)
+THEN
+LLPARTY_CoSLV_SetupCompanionForTrigger(_Avatar, _Companion, _Count);
+
+PROC
+LLPARTY_CoSLV_SetupCompanionForTrigger((CHARACTERGUID)_Avatar, (CHARACTERGUID)_Companion, (INTEGER)_Count)
+AND
+NOT DB_CoS_HoE_LadyVengeance_Companion_Trigger(_, _Companion, _)
+AND
+_Count <= 0
+AND
+NOT DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(_Count, (TRIGGERGUID)_)
+THEN
+ProcRemoveAllDialogEntriesForSpeaker(_Companion);
+DB_CoS_HoE_LadyVengeance_Companion_Trigger(_Avatar,_Companion, TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14);
+ProcObjectTimer(_Companion, "LLPARTY_Timers_CosLV_WalkToTriggerPosition", 500);
+
+PROC
+LLPARTY_CoSLV_SetupCompanionForTrigger((CHARACTERGUID)_Avatar, (CHARACTERGUID)_Companion, (INTEGER)_Count)
+AND
+NOT DB_CoS_HoE_LadyVengeance_Companion_Trigger(_, _Companion, _)
+AND
+_Count >= 1
+AND
+NOT DB_CoS_HoE_LadyVengeance_Companion_TriggerCluster(_Count, (TRIGGERGUID)_)
+THEN
+ProcRemoveAllDialogEntriesForSpeaker(_Companion);
+DB_CoS_HoE_LadyVengeance_Companion_Trigger(_Avatar,_Companion, TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54);
+ProcObjectTimer(_Companion, "LLPARTY_Timers_CosLV_WalkToTriggerPosition", 500);
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Companion, "LLPARTY_Timers_CosLV_WalkToTriggerPosition")
+AND
+DB_CoS_HoE_LadyVengeance_Companion_Trigger(_Avatar, _Companion, _Trigger)
+AND
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(_Trigger, _x, _y, _z)
+AND 
+NOT DB_LLPARTY_CoSLV_Temp_Moving(_Companion)
+THEN
+NOT DB_LLPARTY_CoSLV_ExtraTriggerPosition(_Trigger, _x, _y, _z);
+//ProcCharacterMoveTo(_Companion, TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14,0,"CoS_HoE_LadyVengeance_OriginAtRomanceWaitingPoint");
+CharacterMoveToPosition(_Companion, _x, _y, _z, 0, "CoS_HoE_LadyVengeance_OriginAtRomanceWaitingPoint");
+DB_LLPARTY_CoSLV_Temp_Moving(_Companion);
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Companion, "LLPARTY_Timers_CosLV_WalkToTriggerPosition")
+AND
+DB_LLPARTY_CoSLV_Temp_Moving(_Companion)
+THEN
+NOT DB_LLPARTY_CoSLV_Temp_Moving(_Companion);
+
+IF
+DialogStarted("CoS_LV_HoE_DarkNightOfTheSoulInvitation", _Instance)
+AND
+DB_CoS_HoE_LadyVengeance_DialogSpeaker((INTEGER)_Index,(GUIDSTRING)_Origin)
+AND
+_Origin != NULL_00000000-0000-0000-0000-000000000000
+AND
+_Index >= 3
+AND
+NOT DB_DialogPlayers(_, _Origin, _)
+AND
+IntegerSum(_Index, 2, _SpeakerIndex) // So we don't start at 4
+AND
+IntegertoString(_SpeakerIndex, _IndexStr)
+THEN
+DialogAddActorAt(_Instance, _Origin, _SpeakerIndex);
+LLPARTY_Log("[LLPARTY:CoS_LV_HoE_DarkNightOfTheSoulInvitation] Added origin character to dialog at index [",_IndexStr,"].");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"
