@@ -1,0 +1,58 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+/*
+//Lower Area Spawn Points
+DB_CoS_AotO_Phase_2_LowerAreaSpawn(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_001_e3d919fb-3dbd-4351-807d-73933f66ea2d);
+DB_CoS_AotO_Phase_2_LowerAreaSpawn(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_002_63c99ace-12b2-46a9-8fff-ce7da1297530);
+DB_CoS_AotO_Phase_2_LowerAreaSpawn(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_003_a7614547-ea05-424e-ac5d-6a7059bed27c);
+DB_CoS_AotO_Phase_2_LowerAreaSpawn(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_004_3b2997ab-cd17-4b3c-9f8c-8248672de162);
+*/
+KBSECTION
+/*Workaround for there only being 4 triggers for party members to spawn at. */
+IF
+TimerFinished("Proc_CoS_AotO_PhaseTwoInit_FadeIn_Delay")
+AND
+NOT DB_LLPARTY_CoS_AotO_Phase2Positions(_,_,_,_)
+AND
+GetPosition(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_002_63c99ace-12b2-46a9-8fff-ce7da1297530, _, _ty, _)
+THEN
+DB_LLPARTY_CoS_AotO_Phase2Positions((TRIGGERGUID)TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_001_e3d919fb-3dbd-4351-807d-73933f66ea2d, -247.163, _ty, 976.082);
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_001_e3d919fb-3dbd-4351-807d-73933f66ea2d, -244.742, _ty, 975.053);
+
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_002_63c99ace-12b2-46a9-8fff-ce7da1297530, -246.0, _ty, 974.72);
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_002_63c99ace-12b2-46a9-8fff-ce7da1297530, -245.405, _ty, 977.369);
+
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_003_a7614547-ea05-424e-ac5d-6a7059bed27c, -240.175, _ty, 976.249);
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_003_a7614547-ea05-424e-ac5d-6a7059bed27c, -238.806, _ty, 974.42);
+
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_004_3b2997ab-cd17-4b3c-9f8c-8248672de162, -245.49, _ty, 970.87);
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_004_3b2997ab-cd17-4b3c-9f8c-8248672de162, -246.96, _ty, 971.27);
+
+//For party members 5-10
+IF
+TimerFinished("Proc_CoS_AotO_PhaseTwoInit_FadeIn_Delay")
+AND
+NOT DB_CoS_AotO_Phase_2_LowerAreaSpawn((TRIGGERGUID)_) // All spawn points removed
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_CoS_AotO_Phase_2_LowerAreaSpawn(_Player, (TRIGGERGUID)_)
+AND
+NOT DB_LLPARTY_CoS_AotO_Phase2PositionSet(_Player)
+AND
+DB_LLPARTY_CoS_AotO_Phase2Positions(_Trigger, _x, _y, _z)
+THEN
+NOT DB_LLPARTY_CoS_AotO_Phase2Positions(_Trigger, _x, _y, _z);
+DB_LLPARTY_CoS_AotO_Phase2PositionSet(_Player);
+CharacterRemoveSummons(_Player, 0);
+TeleportToPosition(_Player, _x, _y, _z, "", 1, 0);
+CharacterSetAnimationOverride(_Player, "");
+PartySetFlag(_Player,"QuestUpdate_CoS_ArenaOfTheOne_Phase_2_Start");
+SetCanFight(_Player, 1);
+SetCanJoinCombat(_Player, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"
