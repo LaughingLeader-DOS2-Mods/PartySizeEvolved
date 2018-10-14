@@ -4,7 +4,7 @@ Party Size Evolved Changelog
 * Nameless Isle
 	* Added a workaround for party members 5-10 not teleporting to a position during the Arena of the One event.
 
-# 1.2.0.0
+# [1.2.0.0](#1.2.0.0)
 * Nameless Isle
 	* Fix for the romance dialog after the Arena of the One not including all Origin companions. All companions should now participate:  
 [![Lady Vengeance Romance Dialog](https://i.imgur.com/j35tITSl.jpg)](https://i.imgur.com/j35tITS.png)
