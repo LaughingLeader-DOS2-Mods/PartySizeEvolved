@@ -1,5 +1,8 @@
 Party Size Evolved Changelog
 =======
+# 1.2.1.0b
+* Quick hotfix for the "Working Story" error. It seems casting a value (GUIDSTRING to TRIGGERGUID) in an Origins database was enough to create that error.
+
 # 1.2.1.0
 * Nameless Isle
 	* Added a workaround for party members 5-10 not teleporting to a position during the Arena of the One event.

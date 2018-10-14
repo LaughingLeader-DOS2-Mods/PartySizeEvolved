@@ -33,11 +33,11 @@ DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_00
 IF
 TimerFinished("Proc_CoS_AotO_PhaseTwoInit_FadeIn_Delay")
 AND
-NOT DB_CoS_AotO_Phase_2_LowerAreaSpawn((TRIGGERGUID)_) // All spawn points removed
+SysCount("DB_CoS_AotO_Phase_2_LowerAreaSpawn", 1, 0)
 AND
 DB_IsPlayer(_Player)
 AND
-NOT DB_CoS_AotO_Phase_2_LowerAreaSpawn(_Player, (TRIGGERGUID)_)
+NOT DB_CoS_AotO_Phase_2_LowerAreaSpawn(_Player, (GUIDSTRING)_)
 AND
 NOT DB_LLPARTY_CoS_AotO_Phase2PositionSet(_Player)
 AND
