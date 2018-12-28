@@ -4,9 +4,16 @@ INITSECTION
 
 KBSECTION
 IF
+GameStarted(_,0)
+THEN
+GoalCompleted;
+
+IF
 CharacterJoinedParty(_Character)
 AND
 CharacterIsPlayer(_Character, 1)
+AND
+CharacterIsSummon(_Character, 0)
 AND
 NOT DB_IsPlayer(_Character)
 THEN
