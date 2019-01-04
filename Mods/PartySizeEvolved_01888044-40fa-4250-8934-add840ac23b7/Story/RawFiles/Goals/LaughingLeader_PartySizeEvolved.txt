@@ -6,7 +6,7 @@ KBSECTION
 PROC
 LLPARTY_Internal_Start()
 THEN
-DebugBreak("[LLPARTY] Starting Expanded Party Size.");
+DebugBreak("[LLPARTY] Starting Party Size Evolved.");
 GoalCompleted;
 
 PROC
