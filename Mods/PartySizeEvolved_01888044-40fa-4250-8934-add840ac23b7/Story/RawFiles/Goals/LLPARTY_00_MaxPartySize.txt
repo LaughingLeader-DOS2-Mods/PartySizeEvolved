@@ -21,7 +21,7 @@ SysClear("DB_Origins_MaxPartySize", 1);
 DB_Origins_MaxPartySize(_Max);
 GlobalClearFlag("GEN_MaxPlayerCountReached");
 GlobalSetFlag("LLPARTY_InitializedExpandedParty");
-DB_DB_LLPARTY_QueueNextPartyCount(1);
+DB_LLPARTY_QueueNextPartyCount(1);
 
 IF
 DB_Origins_MaxPartySize(_Val)

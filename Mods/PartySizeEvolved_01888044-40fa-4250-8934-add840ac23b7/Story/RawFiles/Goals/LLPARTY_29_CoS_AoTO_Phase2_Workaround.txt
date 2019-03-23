@@ -32,13 +32,27 @@ DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_00
 //For party members 5-10
 IF
 TimerFinished("Proc_CoS_AotO_PhaseTwoInit_FadeIn_Delay")
+THEN
+TimerCancel("LLPARTY_Timers_CoS_AoTO_AddRemainingPartyToPhaseTwo");
+TimerLaunch("LLPARTY_Timers_CoS_AoTO_AddRemainingPartyToPhaseTwo", 500);
+
+IF
+TimerFinished("LLPARTY_Timers_CoS_AoTO_AddRemainingPartyToPhaseTwo")
 AND
-SysCount("DB_CoS_AotO_Phase_2_LowerAreaSpawn", 1, 0)
+DB_CoS_AotO_Phase_2_LowerAreaSpawn((CHARACTERGUID)_Player, (GUIDSTRING)_Trigger)
+THEN
+DB_LLPARTY_CoS_AotO_Phase2PositionSet(_Player);
+
+IF
+TimerFinished("LLPARTY_Timers_CoS_AoTO_AddRemainingPartyToPhaseTwo")
+THEN
+IterateParties("LLPARTY_CoS_AotO_Iterate_TeleportToNewTrigger");
+
+IF
+StoryEvent((CHARACTERGUID)_Player, "LLPARTY_CoS_AotO_Iterate_TeleportToNewTrigger")
 AND
-DB_IsPlayer(_Player)
-AND
-NOT DB_CoS_AotO_Phase_2_LowerAreaSpawn(_Player, (GUIDSTRING)_)
-AND
+//NOT DB_CoS_AotO_Phase_2_LowerAreaSpawn(_Player, _)
+//AND
 NOT DB_LLPARTY_CoS_AotO_Phase2PositionSet(_Player)
 AND
 DB_LLPARTY_CoS_AotO_Phase2Positions(_Trigger, _x, _y, _z)
