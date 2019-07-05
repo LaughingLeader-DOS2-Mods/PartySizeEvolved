@@ -4,6 +4,13 @@ INITSECTION
 
 KBSECTION
 QRY
+LLPARTY_QRY_NumberIsEven((INTEGER)_Num)
+AND
+IntegerModulo(_Num, 2, 0)
+THEN
+DB_NOOP(1);
+
+QRY
 LLPARTY_QRY_CreatePlayerTag((STRING)_Script, (INTEGER)_PlayerIndex)
 AND
 _PlayerIndex < 5

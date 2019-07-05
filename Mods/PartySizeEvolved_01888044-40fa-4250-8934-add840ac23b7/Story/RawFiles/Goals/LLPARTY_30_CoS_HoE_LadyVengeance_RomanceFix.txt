@@ -26,20 +26,50 @@ GlobalSetFlag("LLPARTY_CoS_HoE_LV_RomanceFixInitialized");
 PROC
 LLPARTY_CosLV_InitRomanceFix()
 AND
-GetPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _z)
+DB_LLPARTY_MaxPartySize(_Max)
 AND
-RealSum(_z, 1.0, _pz1)
+IntegerSubtract(_Max, 4, _Extra)
 AND
-RealSum(_pz1, 1.0, _pz2)
-AND
-RealSum(_pz2, 1.0, _pz3)
+_Extra > 0
 THEN
-DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _pz1);
-DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _pz2);
-DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _pz3);
+LLPARTY_CosLV_CreateNewPositions(_Extra);
 
 PROC
-LLPARTY_CoSLV_InitRomanceFix()
+LLPARTY_CosLV_CreateNewPositions((INTEGER)_Extra)
+AND
+LLPARTY_QRY_NumberIsEven(_Extra)
+AND
+CharacterGetHostCharacter(_Host)
+AND
+GetPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _x, _y, _z)
+AND
+FindValidPosition(_x, _y, _z, 10.0, _Host, _tx, _ty, _tz)
+THEN
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_2_Cluster_000_bc367418-ffe5-447f-894f-aafe633ddb14, _tx, _ty, _tz);
+
+PROC
+LLPARTY_CosLV_CreateNewPositions((INTEGER)_Extra)
+AND
+NOT LLPARTY_QRY_NumberIsEven(_Extra)
+AND
+CharacterGetHostCharacter(_Host)
+AND
+GetPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _z)
+AND
+FindValidPosition(_x, _y, _z, 10.0, _Host, _tx, _ty, _tz)
+THEN
+DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _tx, _ty, _tz);
+
+PROC
+LLPARTY_CosLV_CreateNewPositions((INTEGER)_Extra)
+AND
+IntegerSubtract(_Extra, 1, _NextExtra)
+AND
+_NextExtra > 0
+THEN
+LLPARTY_CosLV_CreateNewPositions(_NextExtra);
+
+/*
 AND
 GetPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _z)
 AND
@@ -52,6 +82,7 @@ THEN
 DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _pz1);
 DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _pz2);
 DB_LLPARTY_CoSLV_ExtraTriggerPosition(TRIGGERGUID_S_CoS_LV_HoE_Companion_1_Cluster_001_87f4d4e3-6901-4b90-8aa9-88e644fcff54, _x, _y, _pz3);
+*/
 
 //Existing saves on the LV
 IF

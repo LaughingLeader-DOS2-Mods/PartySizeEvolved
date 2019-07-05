@@ -10,12 +10,106 @@ DB_CoS_AotO_Phase_2_LowerAreaSpawn(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_004
 */
 KBSECTION
 /*Workaround for there only being 4 triggers for party members to spawn at. */
-IF
-TimerFinished("Proc_CoS_AotO_PhaseTwoInit_FadeIn_Delay")
+PROC
+Proc_CoS_AotO_PhaseTwoInit_1()
 AND
 NOT DB_LLPARTY_CoS_AotO_Phase2Positions(_,_,_,_)
 AND
-GetPosition(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_002_63c99ace-12b2-46a9-8fff-ce7da1297530, _, _ty, _)
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+_Max > 4
+THEN
+LLPARTY_CoS_AotO_InitPositionFix();
+
+PROC
+LLPARTY_CoS_AotO_InitPositionFix()
+AND
+DB_LLPARTY_MaxPartySize(_Max)
+AND
+IntegerSubtract(_Max, 4, _Extra)
+AND
+_Extra > 0
+THEN
+LLPARTY_CoS_AotO_CreateNewPositions(_Extra);
+
+PROC
+LLPARTY_CoS_AotO_CreateNewPositions((INTEGER)_Extra)
+AND
+LLPARTY_QRY_NumberIsEven(_Extra)
+AND
+CharacterGetHostCharacter(_Host)
+AND
+GetPosition(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_002_63c99ace-12b2-46a9-8fff-ce7da1297530, _x, _y, _z)
+AND
+Random(500, _RanX)
+AND
+Random(500, _RanZ)
+AND
+IntegerSum(_RanX, 1, _RanX2)
+AND
+IntegerSum(_RanZ, 1, _RanZ2)
+AND
+Real(_RanX2, _RealRanX)
+AND
+Real(_RanZ2, _RealRanZ)
+AND
+RealDivide(_RealRanX, 500.0, _XDiff)
+AND
+RealDivide(_RealRanZ, 500.0, _ZDiff)
+AND
+RealSum(_x, _XDiff, _cx)
+AND
+RealSum(_z, _ZDiff, _cz)
+AND
+FindValidPosition(_cx, _y, _cz, 10.0, _Host, _tx, _ty, _tz)
+THEN
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_002_63c99ace-12b2-46a9-8fff-ce7da1297530, _tx, _ty, _tz);
+
+PROC
+LLPARTY_CoS_AotO_CreateNewPositions((INTEGER)_Extra)
+AND
+NOT LLPARTY_QRY_NumberIsEven(_Extra)
+AND
+CharacterGetHostCharacter(_Host)
+AND
+GetPosition(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_003_a7614547-ea05-424e-ac5d-6a7059bed27c, _x, _y, _z)
+AND
+Random(500, _RanX)
+AND
+Random(500, _RanZ)
+AND
+IntegerSum(_RanX, 1, _RanX2)
+AND
+IntegerSum(_RanZ, 1, _RanZ2)
+AND
+Real(_RanX2, _RealRanX)
+AND
+Real(_RanZ2, _RealRanZ)
+AND
+RealDivide(_RealRanX, 500.0, _XDiff)
+AND
+RealDivide(_RealRanZ, 500.0, _ZDiff)
+AND
+RealSum(_x, _XDiff, _cx)
+AND
+RealSum(_z, _ZDiff, _cz)
+AND
+FindValidPosition(_cx, _y, _cz, 10.0, _Host, _tx, _ty, _tz)
+THEN
+DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_003_a7614547-ea05-424e-ac5d-6a7059bed27c, _tx, _ty, _tz);
+
+PROC
+LLPARTY_CoS_AotO_CreateNewPositions((INTEGER)_Extra)
+AND
+IntegerSubtract(_Extra, 1, _NextExtra)
+AND
+_NextExtra > 0
+THEN
+LLPARTY_CoS_AotO_CreateNewPositions(_NextExtra);
+
+/*
+PROC
+LLPARTY_CoS_AotO_InitPhasePositions((REAL)_ty)
 THEN
 DB_LLPARTY_CoS_AotO_Phase2Positions((TRIGGERGUID)TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_001_e3d919fb-3dbd-4351-807d-73933f66ea2d, -247.163, _ty, 976.082);
 DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_001_e3d919fb-3dbd-4351-807d-73933f66ea2d, -244.742, _ty, 975.053);
@@ -28,8 +122,9 @@ DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_00
 
 DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_004_3b2997ab-cd17-4b3c-9f8c-8248672de162, -245.49, _ty, 970.87);
 DB_LLPARTY_CoS_AotO_Phase2Positions(TRIGGERGUID_S_CoS_AotO_P2_TeleportTrigger_004_3b2997ab-cd17-4b3c-9f8c-8248672de162, -246.96, _ty, 971.27);
+*/
 
-//For party members 5-10
+//For party members 5+
 IF
 TimerFinished("Proc_CoS_AotO_PhaseTwoInit_FadeIn_Delay")
 THEN

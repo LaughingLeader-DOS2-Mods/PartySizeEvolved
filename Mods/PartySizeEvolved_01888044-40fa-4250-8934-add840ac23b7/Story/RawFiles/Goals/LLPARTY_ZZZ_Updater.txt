@@ -1,16 +1,16 @@
 Version 1
 SubGoalCombiner SGC_AND
 INITSECTION
-LLPARTY_Updater_SetVersion("1.2.1.0");
+LLPARTY_Updater_SetVersion("1.3.0.0");
 KBSECTION
 //REGION VERSIONING
 IF
 GameStarted(_,_)
 AND
-LLPARTY_Updater_QRY_UpdateNeeded("1.2.1.0")
+LLPARTY_Updater_QRY_UpdateNeeded("1.3.0.0")
 THEN
-LLPARTY_Updater_RemoveOldVersions("1.2.1.0");
-LLPARTY_Updater_SetVersion("1.2.1.0");
+LLPARTY_Updater_RemoveOldVersions("1.3.0.0");
+LLPARTY_Updater_SetVersion("1.3.0.0");
 
 QRY
 LLPARTY_Updater_QRY_UpdateNeeded((STRING)_Version)

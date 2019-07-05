@@ -22,6 +22,22 @@ DB_LLPARTY_MaxPartySize(_Max)
 THEN
 DB_LLPARTY_Temp_NextMaxPartySize(_Max);
 
+QRY
+LLPARTY_QRY_MaxBelowLimit((INTEGER)_Max)
+AND
+_Max <= 10
+THEN
+DB_NOOP(1);
+
+QRY
+LLPARTY_QRY_MaxBelowLimit((INTEGER)_Max)
+AND
+_Max > 10
+AND
+DB_GlobalFlag("LLPARTY_Debug_UnlimitedPartySize")
+THEN
+DB_NOOP(1);
+
 IF
 GlobalFlagSet("LLPARTY_Commands_IncreaseMaxPartySize")
 AND
@@ -31,7 +47,7 @@ DB_LLPARTY_Temp_NextMaxPartySize(_Max)
 AND
 IntegerSum(_Max, 1, _NextMax)
 AND
-_NextMax <= 10
+LLPARTY_QRY_MaxBelowLimit(_NextMax)
 AND
 IntegertoString(_NextMax, _NextStr)
 THEN
