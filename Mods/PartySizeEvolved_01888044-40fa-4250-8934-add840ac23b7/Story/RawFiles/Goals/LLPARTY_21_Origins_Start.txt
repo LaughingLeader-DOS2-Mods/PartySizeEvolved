@@ -1,0 +1,25 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+LLPARTY_Origins_CompleteIfStarted();
+KBSECTION
+PROC
+LLPARTY_Origins_CompleteIfStarted()
+AND
+DB_CurrentGameMode("Campaign")
+THEN
+GoalCompleted;
+
+IF
+GameModeStarted("Campaign",_IsEditorMode)
+THEN
+GoalCompleted;
+
+PROC
+Proc_GameModeStarted("Campaign",(INTEGER)_IsEditorMode)
+THEN
+GoalCompleted;
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LaughingLeader_PartySizeEvolved"

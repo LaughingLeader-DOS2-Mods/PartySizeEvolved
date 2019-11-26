@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+/*
+PROC
+LLPARTY_CC_Campaign_InitSettings()
+THEN
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_005_57e2c948-a2bf-4597-9fd5-b8a3397d7890);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_006_6ab73d66-d3b7-4817-b902-844f579a66f0);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_007_79ca6425-dd1b-4c92-acff-ae709e41f88f);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_008_1eed55e8-dbc8-43e0-a646-a2f37c0192c2);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_009_54b6cec8-5eef-484e-b607-bb2488d8c8a5);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_010_d234fe33-2ca1-4c59-a2e9-eea077f1cdca);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_011_4de370fb-0984-44f7-ab9d-e47bb295aeb5);
+
+PROC
+LLPARTY_CC_GM_InitSettings()
+THEN
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_001_da072fe7-fdd5-42ae-9139-8bd4b9fca406);
+DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_002_361dacdc-4135-4d3f-a9a2-3cad46ca246a);
+DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_003_dded8c22-b28e-45c1-a074-eb0954602c8a);
+DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_004_5f93cae7-6c10-4da1-b9a5-0efafc168c8e);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_005_57e2c948-a2bf-4597-9fd5-b8a3397d7890);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_006_6ab73d66-d3b7-4817-b902-844f579a66f0);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_007_79ca6425-dd1b-4c92-acff-ae709e41f88f);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_008_1eed55e8-dbc8-43e0-a646-a2f37c0192c2);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_009_54b6cec8-5eef-484e-b607-bb2488d8c8a5);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_010_d234fe33-2ca1-4c59-a2e9-eea077f1cdca);
+DB_CharacterCreationDummy((CHARACTERGUID)CHARACTERGUID_S_GLO_CharacterCreationDummy_LLPARTY_011_4de370fb-0984-44f7-ab9d-e47bb295aeb5);
+//Shared CC
+PROC
+PROC_Shared_CharacterCreation_Init()
+THEN
+LLPARTY_CC_Campaign_InitSettings();
+
+//GM CC
+IF
+GameModeStarted("GameMaster",_IsEditorMode)
+THEN
+LLPARTY_CC_GM_InitSettings();
+*/
+EXITSECTION
+
+ENDEXITSECTION

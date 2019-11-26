@@ -191,4 +191,4 @@ LLPARTY_Log("[LLPARTY:CoS_LV_HoE_DarkNightOfTheSoulInvitation] Added origin char
 EXITSECTION
 
 ENDEXITSECTION
-ParentTargetEdge "LaughingLeader_PartySizeEvolved"
+ParentTargetEdge "LLPARTY_21_Origins_Start"
