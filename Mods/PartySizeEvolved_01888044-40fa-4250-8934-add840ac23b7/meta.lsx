@@ -16,7 +16,7 @@
                     <attribute id="MD5" value="" type="23" />
                     <attribute id="MenuLevelName" value="" type="22" />
                     <attribute id="Name" value="Party Size Evolved" type="22" />
-                    <attribute id="NumPlayers" value="4" type="1" />
+                    <attribute id="NumPlayers" value="10" type="1" />
                     <attribute id="PhotoBooth" value="" type="22" />
                     <attribute id="StartupLevelName" value="" type="22" />
                     <attribute id="Tags" value="" type="30" />

@@ -42,10 +42,10 @@ NOT DB_LLPARTY_GameStarted(_Val);
 IF
 GameStarted(_Level, _)
 AND
-IsCharacterCreationLevel(_Level, 0)
-AND
-IsGameLevel(_Level, 1)
-AND
+// IsCharacterCreationLevel(_Level, 0)
+// AND
+// IsGameLevel(_Level, 1)
+//AND
 NOT DB_LLPARTY_GameStarted(_)
 THEN
 DB_LLPARTY_GameStarted(1);
