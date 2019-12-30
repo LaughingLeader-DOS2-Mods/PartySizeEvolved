@@ -262,6 +262,8 @@ GameStarted(_Level,_)
 AND
 IsGameLevel(_Level, 1)
 AND
+GlobalGetFlag("LeaderLib_AutoAddModMenuBooksDisabled", 0)
+AND
 NOT GlobalGetFlag("LLPARTY_AddedInitialBook", 1)
 THEN
 TimerCancel("LLPARTY_Timers_MenuBookCheck");
