@@ -1,0 +1,9 @@
+{
+    "RequiredExtensionVersion": 55,
+    "ModTable": "PartySizeEvolved",
+    "FeatureFlags": [
+        "OsirisExtensions",
+        "Lua",
+        "Preprocessor"
+    ]
+}

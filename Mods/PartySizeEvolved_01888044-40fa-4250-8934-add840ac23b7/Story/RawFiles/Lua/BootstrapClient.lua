@@ -1,0 +1,1 @@
+Ext.Require("Client/PortraitSizes.lua")
