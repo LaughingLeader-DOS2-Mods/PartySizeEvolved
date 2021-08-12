@@ -1,0 +1,5 @@
+Key	Content	Handle
+LLPARTY_ResizePortraits	Automatically Resize Portraits	hc3ce042cgc426g406agb634gf21d8859e822
+LLPARTY_ResizePortraits_Description	Portraits will be resized to accomodate larger parties.	h0196c862gbe00g4201g91d9g5f7069b4b74a
+LLPARTY_Variables_PartySize	Party Size Limit	he77f76eagbfd4g4359gbda1g81f50fdd9f6f
+LLPARTY_Variables_PartySize_Description	The total amount of characters allowed in the party. (Default: 6, Vanilla: 4)	hef4d39b2g2918g4861ga0c4g42f52cd42b18

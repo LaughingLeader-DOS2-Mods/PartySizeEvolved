@@ -1,5 +1,6 @@
 <contentList>
 	<content contentuid="h00149ef6gaa95g4047g9c39g6bd110c7d813">[LLPARTY_PartyManagement_User03_4914df17-9191-4fe6-a83a-2246247b77a1].</content>
+	<content contentuid="h0196c862gbe00g4201g91d9g5f7069b4b74a">Portraits will be resized to accomodate larger parties.</content>
 	<content contentuid="h04c334e2gbc47g46eeg8d06g05470e010902">Commands</content>
 	<content contentuid="h0dd7a8eagac9cg4dc0g9623gfaeb2a65c105">Assigned character to user...</content>
 	<content contentuid="h10457eacg7ae2g404ag8b4cg0f0c4e707413">Confirm</content>
@@ -90,6 +91,7 @@
 	<content contentuid="hbf9e98dcg668eg40f3gad7bge259df244aac">(DEBUG) Enable party size limit of 10. (Default)</content>
 	<content contentuid="hc075abc2g0473g464bg8af8g98765e7ef2fa">Set Max Party Size to Evolved Default (6)</content>
 	<content contentuid="hc0fade48g4996g4270g947ag4bcd3fd1e010">Party Size Evolved - Settings Menu</content>
+	<content contentuid="hc3ce042cgc426g406agb634gf21d8859e822">Automatically Resize Portraits</content>
 	<content contentuid="hc57df0c0g7155g4bb7gb918g25513a140dba">Party Management</content>
 	<content contentuid="hc6f7ca8bgeca1g487cgb255g6b6e6c7a8738">Assign to User [DISABLED - You can&apos;t assign your currently selected character!]</content>
 	<content contentuid="hc7bbd248g596fg4461g80e1g86a37c9b7efc">[Back]</content>
@@ -112,11 +114,13 @@
 	<content contentuid="he2a477acg70c8g4fecga7f7g65262bcac03f">Set Max Party Size to Evolved Default (6)</content>
 	<content contentuid="he339477egf85eg4bd2g9134g6b901edaf0b4">[Error] No characters available for management.</content>
 	<content contentuid="he6b2f53eg67f7g4eb6gacf7g9afdd196d584">Selected user has disconnected. Canceling...</content>
+	<content contentuid="he77f76eagbfd4g4359gbda1g81f50fdd9f6f">Party Size Limit</content>
 	<content contentuid="he8100872ga202g4b5bg88bfg011a72db8998">[Exit]</content>
 	<content contentuid="he85fedd2gea13g46f4gbef9g3661edec0424">Clearing data...</content>
 	<content contentuid="heb5bf639ge511g4afag88cfg641500b36417">Updated settings.</content>
 	<content contentuid="hec52e823g3e67g4d5eg8d1fgb1c9cc9eb680">[LLPARTY_PartyManagement_Character08_019033bb-1e5a-4ba4-bfcd-d8616afd8621]</content>
 	<content contentuid="hee2ec288g0ffeg4954g9556g10263cfb6b33">Character assigned to user.</content>
+	<content contentuid="hef4d39b2g2918g4861ga0c4g42f52cd42b18">The total amount of characters allowed in the party. (Default: 6, Vanilla: 4)</content>
 	<content contentuid="hf23455e3gbd43g4994ga636gde023cc3b1a7">[LLPARTY_PartyManagement_Character07_382ce228-e5f0-4e6d-a91d-880b3e38da10]</content>
 	<content contentuid="hf532a81dgdabcg48faga462g20001399940b">Loading management options...</content>
 	<content contentuid="hf66f7c9fgdec8g4c3fgb3f5g5f521a3b48fc">Transferring character to user...</content>
