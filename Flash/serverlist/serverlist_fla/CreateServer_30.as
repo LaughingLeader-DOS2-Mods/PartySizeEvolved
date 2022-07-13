@@ -34,6 +34,7 @@ package serverlist_fla
 			addFrameScript(0,this.frame1);
 		}
 		
+		//PartySizeEvolved - Added/Set totalSlots to 10
 		public function init(gameMode:int, isHotSeat:Boolean, totalSlots:Number = 10) : *
 		{
 			var slot_mc:PlayerSlot = null;
@@ -64,6 +65,27 @@ package serverlist_fla
 			}
 			this.gmSlot_mc.visible = this.gameMode == GameMode.GameMaster;
 			this.slotList.positionElements();
+		}
+
+		//PartySizeEvolved - New Addition
+		public function addSlot(reposition:Boolean = false) : uint
+		{
+			var main:MovieClip = (root as MovieClip);
+			var i:uint = this.slotList.length;
+			var slot_mc:PlayerSlot = new PlayerSlot();
+			this.slotList.addElement(slot_mc,false);
+			slot_mc.id = i;
+			slot_mc.filled_mc.id = i;
+			slot_mc.initialize(main.slot_types,main.strings,this.gameMode);
+			slot_mc.canChangeType = i < this._maxOpenSlots;
+			slot_mc.isMaster = this.isMaster;
+			slot_mc.playerCombo.visible = this.isMaster && this.gameMode == GameMode.Arena;
+			slot_mc.teamCombo.visible = false;
+			slot_mc.readyButton.visible = !this._isHotSeat;
+			if(reposition) {
+				this.slotList.positionElements();
+			}
+			return i;
 		}
 		
 		public function updatePlayerComboBoxes(param1:Array, param2:Array) : *
