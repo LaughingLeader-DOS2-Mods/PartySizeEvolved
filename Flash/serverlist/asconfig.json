@@ -1,10 +1,10 @@
 {
-	"mainClass": "MainTimeline",
+	"mainClass": "CreateServer_30",
 	"compilerOptions": {
 		"source-path": [".", "D:\\Modding\\DOS2DE\\UI_Modding\\_GUI_FLA\\serverlist"],
 		"target-player": "10.3"
 	},
 	"files": [
-		"serverlist_fla/MainTimeline.as"
+		"serverlist_fla/CreateServer_30.as"
 	]
 }

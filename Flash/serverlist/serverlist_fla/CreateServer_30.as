@@ -35,7 +35,7 @@ package serverlist_fla
 		}
 		
 		//PartySizeEvolved - Added/Set totalSlots to 10
-		public function init(gameMode:int, isHotSeat:Boolean, totalSlots:Number = 10) : *
+		public function init(gameMode:int, isHotSeat:Boolean, totalSlots:uint = 10) : *
 		{
 			var slot_mc:PlayerSlot = null;
 			this.gameMode = gameMode;

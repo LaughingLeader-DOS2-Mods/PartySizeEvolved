@@ -1,0 +1,11 @@
+{
+	"mainClass": "lobbyPanel_1",
+	"compilerOptions": {
+		"source-path": [".", "D:\\Modding\\DOS2DE\\UI_Modding\\_GUI_FLA\\_Controller\\serverlist_c\\"],
+		"target-player": "10.3"
+	},
+	"files": [
+		"serverlist_c_fla\\lobbyPanel_1.as",
+		"D:\\Modding\\DOS2DE\\UI_Modding\\_GUI_FLA\\_Controller\\consoleHints_c\\BtnHintContainer.as"
+	]
+}

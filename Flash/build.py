@@ -29,6 +29,7 @@ OUTPUT = DOS2DE_PUBLIC.joinpath("PartySizeEvolved_01888044-40fa-4250-8934-add840
 
 targets = [
     "serverlist",
+    "serverlist_c",
 ]
 
 package_pattern = re.compile("package ([^\s]+)", re.IGNORECASE | re.MULTILINE)
