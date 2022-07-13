@@ -1,3 +1,8 @@
+local _ISCLIENT = Ext.IsClient()
+local _EXTVERSION = Ext.Version()
+
+MAX_PLAYERS = 10
+
 function GetSettings()
 	if Mods.LeaderLib ~= nil then
 		local settings = Mods.LeaderLib.SettingsManager.GetMod(ModuleUUID, false)
@@ -8,9 +13,7 @@ function GetSettings()
 	return nil
 end
 
-local isClient = Ext.IsClient()
-
-if not isClient then
+if not _ISCLIENT then
 	local updateUsers = {}
 
 	Ext.RegisterNetListener("LLPARTY_RequestPortraitsUpdate", function(cmd, payload, user)
@@ -37,10 +40,10 @@ else
 	end)
 end
 
-if Ext.Version() >= 56 then
+if _EXTVERSION >= 56 then
 	local _getBaseInfo = function()
 		local manager = nil
-		if isClient then
+		if _ISCLIENT then
 			manager = Ext.Client.GetModManager()
 		else
 			manager = Ext.Server.GetModManager()
@@ -53,17 +56,17 @@ if Ext.Version() >= 56 then
 	local function SetNumPlayers(maxCount)
 		local info = _getBaseInfo()
 		if info then
-			info.NumPlayers = maxCount or 10
+			info.NumPlayers = maxCount or MAX_PLAYERS
 		end
 	end
 
 	Ext.RegisterListener("GameStateChanged", function (lastState, nextState)
-		if isClient then
+		if _ISCLIENT then
 			if nextState == "Menu" then
-				SetNumPlayers(10)
+				SetNumPlayers(MAX_PLAYERS)
 			end
 		elseif lastState == "LoadModule" then
-			SetNumPlayers(10)
+			SetNumPlayers(MAX_PLAYERS)
 		end
 	end)
 end
