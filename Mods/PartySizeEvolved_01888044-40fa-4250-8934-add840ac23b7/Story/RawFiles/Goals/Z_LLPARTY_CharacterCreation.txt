@@ -19,20 +19,35 @@ DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_009_54b6ce
 DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_010_d234fe33-2ca1-4c59-a2e9-eea077f1cdca);
 //DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_011_4de370fb-0984-44f7-ab9d-e47bb295aeb5);
 
+DB_GenericOrigins((CHARACTERGUID)S_GLO_Henchman_Fighter_3f44ca37-37db-4415-9c07-8a6a5043f4d9);
+DB_GenericOrigins(S_GLO_Henchman_Battlemage_771422fe-7f0a-4997-a600-66de69c75d80);
+DB_GenericOrigins(S_GLO_Henchman_Knight_3b4ec079-75be-4f79-8f4b-449c650d438d);
+DB_GenericOrigins(S_GLO_Henchman_Inquisitor_0d13b184-24a7-42e1-acf4-5728e92a25f9);
+DB_GenericOrigins(S_GL_Henchman_Ranger_9bb343ab-65fe-4a8b-b1b6-0d084f5444ee);
+DB_GenericOrigins(S_GLO_Henchman_Rogue_0ea50c31-7f09-484e-aec1-2f8d5492e8cb);
+DB_GenericOrigins(S_GLO_Henchman_Shadowblade_83fcfdd1-3150-4080-9f69-5461ce57fee2);
+DB_GenericOrigins(S_GLO_Henchman_Wayfarer_32bccd3b-17ea-4daf-989a-141842293970);
+DB_GenericOrigins(S_GLO_Henchman_Metamorph_0ab5b88b-368c-4303-b95f-0a34a9838d33);
+DB_GenericOrigins(S_GLO_Henchman_Conjurer_12837117-e53e-4997-9b02-a1d2aa89419a);
+DB_GenericOrigins(S_GLO_Henchman_Wizard_0539b874-7adc-4dfc-8258-bdbae55309ad);
+DB_GenericOrigins(S_GLO_Henchman_Witch_4c565d89-c00b-47ab-8335-9edfa9757971);
+DB_GenericOrigins(S_GLO_Henchman_Enchanter_827b9f8c-6bd9-4f52-a2ab-7fe6c425bbe5);
+DB_GenericOrigins(S_GLO_Henchman_Cleric_240a8377-e26c-4cfa-ac84-2a2e6369e9da);
+
 PROC
 LLPARTY_CC_GM_InitSettings()
 THEN
 SysClear("DB_CharacterCreationDummy", 1);
 DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_001_da072fe7-fdd5-42ae-9139-8bd4b9fca406);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_002_361dacdc-4135-4d3f-a9a2-3cad46ca246a);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_003_dded8c22-b28e-45c1-a074-eb0954602c8a);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_004_5f93cae7-6c10-4da1-b9a5-0efafc168c8e);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_005_57e2c948-a2bf-4597-9fd5-b8a3397d7890);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_006_6ab73d66-d3b7-4817-b902-844f579a66f0);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_007_79ca6425-dd1b-4c92-acff-ae709e41f88f);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_008_1eed55e8-dbc8-43e0-a646-a2f37c0192c2);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_009_54b6cec8-5eef-484e-b607-bb2488d8c8a5);
-DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_010_d234fe33-2ca1-4c59-a2e9-eea077f1cdca);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_002_361dacdc-4135-4d3f-a9a2-3cad46ca246a);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_003_dded8c22-b28e-45c1-a074-eb0954602c8a);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_004_5f93cae7-6c10-4da1-b9a5-0efafc168c8e);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_005_57e2c948-a2bf-4597-9fd5-b8a3397d7890);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_006_6ab73d66-d3b7-4817-b902-844f579a66f0);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_007_79ca6425-dd1b-4c92-acff-ae709e41f88f);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_008_1eed55e8-dbc8-43e0-a646-a2f37c0192c2);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_009_54b6cec8-5eef-484e-b607-bb2488d8c8a5);
+DB_CharacterCreationDummy(S_GLO_CharacterCreationDummy_010_d234fe33-2ca1-4c59-a2e9-eea077f1cdca);
 //DB_CharacterCreationDummy((CHARACTERGUID)S_GLO_CharacterCreationDummy_011_4de370fb-0984-44f7-ab9d-e47bb295aeb5);
 
 //Shared CC
