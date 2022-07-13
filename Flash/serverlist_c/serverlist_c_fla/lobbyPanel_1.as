@@ -10,7 +10,7 @@ package serverlist_c_fla
 	public dynamic class lobbyPanel_1 extends MovieClip
 	{
 		public var bg_mc:MovieClip;
-		public var buttonHint_mc:BtnHintContainer;
+		public var buttonHint_mc:MovieClip;
 		public var filters_mc:MovieClip;
 		public var gmCampaignPreviewBG_mc:MovieClip;
 		public var gmCampaignPreview_mc:MovieClip;
