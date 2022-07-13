@@ -50,7 +50,6 @@ function PlayerInfo.RepositionPortraits(ui, event)
 			if playerInfo then
 				playerInfo.y = y
 				y = y + (playerInfo.height * playerInfo.scaleY)
-				print(i, playerInfo.y)
 			end
 		end
 	end
