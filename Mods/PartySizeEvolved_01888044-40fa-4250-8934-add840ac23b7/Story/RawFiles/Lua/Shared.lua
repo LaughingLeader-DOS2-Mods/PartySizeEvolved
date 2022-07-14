@@ -1,5 +1,4 @@
 local _ISCLIENT = Ext.IsClient()
-local _EXTVERSION = Ext.Version()
 
 MAX_PLAYERS = 10
 
@@ -26,7 +25,7 @@ if not _ISCLIENT then
 		TimerLaunch("Timers_LLPARTY_UpdatePortraits", 250)
 	end)
 	
-	Ext.RegisterOsirisListener("TimerFinished", 1, "after", function(timerName)
+	Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(timerName)
 		if timerName == "Timers_LLPARTY_UpdatePortraits" then
 			for id,b in pairs(updateUsers) do
 				Ext.PostMessageToUser(id, "LLPARTY_RepositionPortraits", "")
@@ -40,33 +39,34 @@ else
 	end)
 end
 
-if _EXTVERSION >= 56 then
-	local _getBaseInfo = function()
-		local manager = nil
-		if _ISCLIENT then
-			manager = Ext.Client.GetModManager()
-		else
-			manager = Ext.Server.GetModManager()
-		end
-		if manager and manager.BaseModule then
-			return manager.BaseModule.Info
-		end
+local GetCampaignInfo = function()
+	local manager = nil
+	if _ISCLIENT then
+		manager = Ext.Client.GetModManager()
+	else
+		manager = Ext.Server.GetModManager()
 	end
+	if manager and manager.BaseModule then
+		return manager.BaseModule.Info
+	end
+end
 
-	local function SetNumPlayers(maxCount)
-		local info = _getBaseInfo()
+local function SetNumPlayers(maxCount)
+	maxCount = maxCount or MAX_PLAYERS
+	if maxCount then
+		local info = GetCampaignInfo()
 		if info then
-			info.NumPlayers = maxCount or MAX_PLAYERS
+			info.NumPlayers = maxCount
 		end
 	end
+end
 
-	Ext.RegisterListener("GameStateChanged", function (lastState, nextState)
-		if _ISCLIENT then
-			if nextState == "Menu" then
-				SetNumPlayers(MAX_PLAYERS)
-			end
-		elseif lastState == "LoadModule" then
+Ext.Events.GameStateChanged:Subscribe(function(e)
+	if _ISCLIENT then
+		if e.ToState == "Menu" then
 			SetNumPlayers(MAX_PLAYERS)
 		end
-	end)
-end
+	elseif e.FromState == "LoadModule" then
+		SetNumPlayers(MAX_PLAYERS)
+	end
+end)

@@ -21,18 +21,17 @@ end
 
 --!llparty sizetest
 Ext.RegisterConsoleCommand("llparty", function(cmd, subcmd)
+	local host = Ext.Entity.GetCharacter(CharacterGetHostCharacter())
 	if subcmd == "sizetest" then
-		local host = Ext.GetCharacter(CharacterGetHostCharacter())
 		local x,y,z = table.unpack(host.WorldPos)
 		for i=0,8 do
-			local player = Ext.GetCharacter(CharacterCreateAtPosition(x,y,z, "024d1763-b2aa-46ec-b705-6338059838be", 0))
+			local player = Ext.Entity.GetCharacter(CharacterCreateAtPosition(x,y,z, "024d1763-b2aa-46ec-b705-6338059838be", 0))
 			--Osi.PROC_GLO_PartyMembers_Add(player.MyGuid, host.MyGuid)
 			DebugConfigurePlayer(player.MyGuid, host.ReservedUserID, false)
 		end
 	elseif subcmd == "addorigins" then
-		local host = Ext.GetCharacter(CharacterGetHostCharacter())
 		for i,entry in pairs(Osi.DB_Origins:Get(nil)) do
-			local origin = Ext.GetCharacter(entry[1])
+			local origin = Ext.Entity.GetCharacter(entry[1])
 			print(origin.DisplayName, origin.IsPlayer)
 			if origin and not origin.IsPlayer then
 				TeleportTo(origin.MyGuid, host.MyGuid, "", 1, 0, 1)

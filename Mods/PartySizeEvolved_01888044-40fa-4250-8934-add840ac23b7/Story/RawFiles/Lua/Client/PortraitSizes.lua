@@ -22,7 +22,7 @@ setmetatable(PlayerInfo, {
 })
 
 local function OnAddInfo(ui, event, id, characterHandle, iggyImage, hp, controlled, groupId, pos, equipState, unused, actionFrame, spCurrent, spMax, isAvatar, guiStatus)
-	print(event, string.format("id(%s) characterHandle(%s) iggyImage(%s) hp(%s) controlled(%s) groupId(%s) pos(%s) equipState(%s) unused(%s) actionFrame(%s) spCurrent(%s) spMax(%s) isAvatar(%s) guiStatus", id, characterHandle, iggyImage, hp, controlled, groupId, pos, equipState, unused, actionFrame, spCurrent, spMax, isAvatar, guiStatus))
+	Ext.Utils.Print(event, string.format("id(%s) characterHandle(%s) iggyImage(%s) hp(%s) controlled(%s) groupId(%s) pos(%s) equipState(%s) unused(%s) actionFrame(%s) spCurrent(%s) spMax(%s) isAvatar(%s) guiStatus", id, characterHandle, iggyImage, hp, controlled, groupId, pos, equipState, unused, actionFrame, spCurrent, spMax, isAvatar, guiStatus))
 end
 
 local function OnUpdateDone(ui, event)

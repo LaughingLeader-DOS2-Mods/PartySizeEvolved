@@ -7,7 +7,8 @@ local addedDropdowns = {}
 local function UpdateFilterDropdowns(ui, typeID)
 	if not addedDropdowns[typeID] then
 		local this = ui:GetRoot()
-		for i=3,8 do
+		local len = MAX_PLAYERS - 2
+		for i=3,len do
 			---10 is the players filter, the second param is the dropdown index, and the third param is the label 2-4 is index 0-2
 			this.addFilterDropDownOption(10, i, tostring(i + 2))
 		end
@@ -16,9 +17,9 @@ local function UpdateFilterDropdowns(ui, typeID)
 			if ui then
 				local this = ui:GetRoot()
 				if this then
-					this.selectFilterDropDownEntry(10, 8)
+					this.selectFilterDropDownEntry(10, len)
 				end
-				ui:ExternalInterfaceCall("filterDDChange", 0, 10, 8)
+				ui:ExternalInterfaceCall("filterDDChange", 0, 10, len)
 			end
 		end)
 		addedDropdowns[typeID] = true
