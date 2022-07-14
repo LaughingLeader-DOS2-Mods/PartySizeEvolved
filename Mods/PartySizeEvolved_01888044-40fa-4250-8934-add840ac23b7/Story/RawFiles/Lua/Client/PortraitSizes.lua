@@ -10,7 +10,7 @@ PlayerInfo = {}
 setmetatable(PlayerInfo, {
 	__index = function(tbl,k)
 		if k == "Root" or k == "Instance" then
-			local ui = Ext.GetUIByType(ID.playerInfo) or Ext.GetUIByType(ID.playerInfo_c)
+			local ui = Ext.UI.GetByType(ID.playerInfo) or Ext.UI.GetByType(ID.playerInfo_c)
 			if ui then
 				if k == "Root" then
 					return ui:GetRoot()

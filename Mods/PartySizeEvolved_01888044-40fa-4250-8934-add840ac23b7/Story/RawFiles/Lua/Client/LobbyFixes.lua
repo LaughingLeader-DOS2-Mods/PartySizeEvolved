@@ -1,5 +1,5 @@
-Ext.AddPathOverride("Public/Game/GUI/serverlist.swf", "Public/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/GUI/Overrides/serverlist.swf")
-Ext.AddPathOverride("Public/Game/GUI/serverlist_c.swf", "Public/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/GUI/Overrides/serverlist_c.swf")
+Ext.IO.AddPathOverride("Public/Game/GUI/serverlist.swf", "Public/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/GUI/Overrides/serverlist.swf")
+Ext.IO.AddPathOverride("Public/Game/GUI/serverlist_c.swf", "Public/PartySizeEvolved_01888044-40fa-4250-8934-add840ac23b7/GUI/Overrides/serverlist_c.swf")
 
 local addedDropdowns = {}
 
@@ -8,10 +8,11 @@ local function UpdateFilterDropdowns(ui, typeID)
 	if not addedDropdowns[typeID] then
 		local this = ui:GetRoot()
 		for i=3,8 do
+			---10 is the players filter, the second param is the dropdown index, and the third param is the label 2-4 is index 0-2
 			this.addFilterDropDownOption(10, i, tostring(i + 2))
 		end
 		Ext.OnNextTick(function()
-			local ui = Ext.GetUIByType(typeID)
+			local ui = Ext.UI.GetByType(typeID)
 			if ui then
 				local this = ui:GetRoot()
 				if this then
@@ -33,7 +34,7 @@ Ext.RegisterUITypeCall(27, "registerAnchorId", function (ui, event)
 end)
 
 Ext.Events.ResetCompleted:Subscribe(function (e)
-	local ui = Ext.GetUIByType(26) or Ext.GetUIByType(27)
+	local ui = Ext.UI.GetByType(26) or Ext.UI.GetByType(27)
 	if ui then
 		UpdateFilterDropdowns(ui, ui:GetTypeId())
 	end
