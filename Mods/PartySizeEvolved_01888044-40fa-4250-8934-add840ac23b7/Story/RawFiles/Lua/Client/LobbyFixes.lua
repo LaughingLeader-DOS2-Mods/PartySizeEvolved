@@ -10,16 +10,33 @@ local function UpdateFilterDropdowns(ui, typeID)
 		for i=3,8 do
 			this.addFilterDropDownOption(10, i, tostring(i + 2))
 		end
-		this.selectFilterDropDownEntry(10, 8)
+		Ext.OnNextTick(function()
+			local ui = Ext.GetUIByType(typeID)
+			if ui then
+				local this = ui:GetRoot()
+				if this then
+					this.selectFilterDropDownEntry(10, 8)
+				end
+				ui:ExternalInterfaceCall("filterDDChange", 0, 10, 8)
+			end
+		end)
 		addedDropdowns[typeID] = true
 	end
 end
+
 Ext.RegisterUITypeCall(26, "registerAnchorId", function (ui, event)
 	UpdateFilterDropdowns(ui, 26)
 end)
 
 Ext.RegisterUITypeCall(27, "registerAnchorId", function (ui, event)
 	UpdateFilterDropdowns(ui, 27)
+end)
+
+Ext.Events.ResetCompleted:Subscribe(function (e)
+	local ui = Ext.GetUIByType(26) or Ext.GetUIByType(27)
+	if ui then
+		UpdateFilterDropdowns(ui, ui:GetTypeId())
+	end
 end)
 
 -- Ext.RegisterUITypeInvokeListener(26, "setSlotClient", function (ui, event, index, playerType, teamId, title, isReady, isMine)
