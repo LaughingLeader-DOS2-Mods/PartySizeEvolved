@@ -110,6 +110,8 @@ local function OnPartySizeChanged(amount)
 			Osi.LLPARTY_InstallMod()
 			Osi.LLPARTY_Settings_UpdateDialogVars()
 			GlobalClearFlag("GEN_MaxPlayerCountReached")
+		else
+			UpdateLobby()
 		end
 	end
 end
@@ -147,4 +149,4 @@ Ext.Events.SessionLoaded:Subscribe(function (e)
 			end)
 		end
 	end
-end, {Priority=1000})
+end, {Priority=1})

@@ -35,12 +35,42 @@ Ext.RegisterUITypeCall(27, "registerAnchorId", function (ui, event)
 	UpdateFilterDropdowns(ui, 27)
 end)
 
-Ext.Events.ResetCompleted:Subscribe(function (e)
+function UpdateLobby()
 	local ui = Ext.UI.GetByType(26) or Ext.UI.GetByType(27)
 	if ui then
 		UpdateFilterDropdowns(ui, ui:GetTypeId())
 	end
-end)
+end
+
+local function RegisterRegionChanged()
+	if Mods.LeaderLib.Events and Mods.LeaderLib.Events.RegionChanged then
+		Mods.LeaderLib.Events.RegionChanged:Subscribe(function (e)
+			if e.State ~= 3 and e.LevelType == 3 then
+				local settings = GetSettings()
+				if settings then
+					MAX_PLAYERS = settings.Global:GetVariable("PartySize", MAX_PLAYERS)
+					UpdateLobby()
+				end
+			end
+		end)
+	end
+end
+
+if Mods.LeaderLib then
+	RegisterRegionChanged()
+else
+	Ext.Events.SessionLoaded:Subscribe(function (e)
+		if Mods.LeaderLib then
+			if Mods.LeaderLib.GameHelpers.IsLevelType(3) then
+				local settings = GetSettings()
+				if settings then
+					MAX_PLAYERS = settings.Global:GetVariable("PartySize", MAX_PLAYERS)
+					UpdateLobby()
+				end
+			end
+		end
+	end, {Priority=1000})
+end
 
 -- Ext.RegisterUITypeInvokeListener(26, "setSlotClient", function (ui, event, index, playerType, teamId, title, isReady, isMine)
 -- Ext.RegisterUITypeInvokeListener(26, "addFilterDropDownOption", function (ui, event, index, value, label)
