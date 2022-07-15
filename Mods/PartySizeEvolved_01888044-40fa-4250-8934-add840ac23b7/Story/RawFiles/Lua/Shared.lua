@@ -70,3 +70,7 @@ Ext.Events.GameStateChanged:Subscribe(function(e)
 		SetNumPlayers(MAX_PLAYERS)
 	end
 end)
+
+Ext.Events.ResetCompleted:Subscribe(function (e)
+	SetNumPlayers(MAX_PLAYERS)
+end)

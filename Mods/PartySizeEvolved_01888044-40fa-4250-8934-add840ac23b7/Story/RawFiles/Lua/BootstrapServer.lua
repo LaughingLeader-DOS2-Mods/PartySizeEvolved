@@ -32,7 +32,6 @@ Ext.RegisterConsoleCommand("llparty", function(cmd, subcmd)
 	elseif subcmd == "addorigins" then
 		for i,entry in pairs(Osi.DB_Origins:Get(nil)) do
 			local origin = Ext.Entity.GetCharacter(entry[1])
-			print(origin.DisplayName, origin.IsPlayer)
 			if origin and not origin.IsPlayer then
 				TeleportTo(origin.MyGuid, host.MyGuid, "", 1, 0, 1)
 				Osi.PROC_GLO_PartyMembers_Add(origin.MyGuid, host.MyGuid)
