@@ -1,14 +1,6 @@
 {
 	"TitleColor": "#11FF99",
 	"Data": {
-		"Flags": [
-			{
-				"Type" : "Global",
-				"Entries" : [
-					"LLPARTY_ResizePortraits"
-				]
-			}
-		],
 		"Variables": {
 			"NamePrefix" : "LLPARTY_Variables_",
 			"Entries" : {
@@ -24,8 +16,7 @@
 	"MenuOrder": [
 		{
 			"Entries" : [
-				"PartySize",
-				"LLPARTY_ResizePortraits"
+				"PartySize"
 			]
 		}
 	]
