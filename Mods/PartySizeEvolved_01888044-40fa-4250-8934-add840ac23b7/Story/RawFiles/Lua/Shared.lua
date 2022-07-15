@@ -51,8 +51,22 @@ local GetCampaignInfo = function()
 	end
 end
 
+function TryLoadMultiplayerLimit()
+	local b,partySizeSettings = pcall(Ext.IO.LoadFile, "PartySizeEvolved_MultiplayerLimit.json")
+	if b and partySizeSettings ~= nil and partySizeSettings ~= "" then
+		local settings = Ext.Json.Parse(partySizeSettings)
+		if settings and type(settings.Max) == "number" then
+			local maxCount = math.ceil(settings.Max)
+			MAX_PLAYERS = maxCount
+		end
+	end
+end
+
 local function SetNumPlayers(maxCount)
-	maxCount = maxCount or MAX_PLAYERS
+	if not maxCount then
+		TryLoadMultiplayerLimit()
+		maxCount = MAX_PLAYERS
+	end
 	if maxCount then
 		local info = GetCampaignInfo()
 		if info then
@@ -64,13 +78,13 @@ end
 Ext.Events.GameStateChanged:Subscribe(function(e)
 	if _ISCLIENT then
 		if e.ToState == "Menu" then
-			SetNumPlayers(MAX_PLAYERS)
+			SetNumPlayers()
 		end
 	elseif e.FromState == "LoadModule" then
-		SetNumPlayers(MAX_PLAYERS)
+		SetNumPlayers()
 	end
 end)
 
 Ext.Events.ResetCompleted:Subscribe(function (e)
-	SetNumPlayers(MAX_PLAYERS)
+	SetNumPlayers()
 end)

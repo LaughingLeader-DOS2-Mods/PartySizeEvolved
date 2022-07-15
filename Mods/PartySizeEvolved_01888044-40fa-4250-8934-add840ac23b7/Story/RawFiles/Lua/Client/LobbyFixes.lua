@@ -6,6 +6,7 @@ local addedDropdowns = {}
 --This adds more slot dropdowns (5-10), then selects 10, which updates the engine's player slot limit
 local function UpdateFilterDropdowns(ui, typeID)
 	if not addedDropdowns[typeID] then
+		TryLoadMultiplayerLimit()
 		local this = ui:GetRoot()
 		local len = MAX_PLAYERS - 2
 		for i=3,len do
