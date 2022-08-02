@@ -2,6 +2,77 @@ local _ISCLIENT = Ext.IsClient()
 
 MAX_PLAYERS = 10
 
+Utils = {}
+
+---@param asTable boolean|nil if true, a regular table is returned, which needs to be used with pairs/ipairs.
+---@return (fun():EsvCharacter|EclCharacter)|table<integer, EsvCharacter|EclCharacter>
+function Utils.GetPlayers(asTable)
+	local players = {}
+	if not _ISCLIENT then
+		if Ext.OsirisIsCallable() then
+			for _,db in pairs(Osi.DB_IsPlayer:Get(nil)) do
+				local player = Ext.Entity.GetCharacter(db[1])
+				if player then
+					players[#players+1] = player
+				end
+			end
+		else
+			for _,v in pairs(Ext.Entity.GetAllCharacterGuids()) do
+				local character = Ext.Entity.GetCharacter(v)
+				if character and character.IsPlayer or character.ReservedUserID > -1 then
+					players[#players+1] = character
+				end
+			end
+		end
+		if Ext.Utils.GetGameMode() == "GameMaster" then
+			local gm = Ext.Entity(CharacterGetHostCharacter())
+			if gm then
+				local hasGM = false
+				for _,v in pairs(players) do
+					if v.MyGuid == gm.MyGuid then
+						hasGM = true
+						break
+					end
+				end
+				if not hasGM then
+					players[#players+1] = gm
+				end
+			end
+		end
+	else
+		local ui = Ext.UI.GetByPath("Public/Game/GUI/playerInfo.swf")
+		if ui then
+			local this = ui:GetRoot()
+			if this then
+				for i=0,#this.player_array-1 do
+					local player_mc = this.player_array[i]
+					if player_mc then
+						if not Ext.Math.IsNaN(player_mc.characterHandle) then
+							local handle = Ext.UI.DoubleToHandle(player_mc.characterHandle)
+							if Ext.Utils.IsValidHandle(handle) then
+								players[#players+1] = Ext.Entity.GetCharacter(handle)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	if not asTable then
+		local i = 0
+		local count = #players
+		return function ()
+			i = i + 1
+			if i <= count then
+				return players[i]
+			end
+		end
+	else
+		return players
+	end
+end
+
 ---@return ModSettings
 function GetSettings()
 	if Mods.LeaderLib ~= nil then
