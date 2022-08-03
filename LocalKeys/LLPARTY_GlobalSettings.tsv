@@ -1,4 +1,6 @@
 Key	Content	Handle
+LLPARTY_DisplayName	Party Size Evolved	h750ae406g1da1g42f6g91e0g26d4fcad9a6f
+LLPARTY_Description	Expands the party size to 6 by default. This can be increased/decreased at will via the settings menu, allowing you to have up to 10 party members at once. If the extender is enabled, the lobby will work with more than 4 players, allowing 5+ players in character creation (EXPERIMENTAL).	h03fff60bg1ba4g4d99g9eb1g63071ba4676f
 LLPARTY_ResizePortraits	Automatically Resize Portraits	hc3ce042cgc426g406agb634gf21d8859e822
 LLPARTY_ResizePortraits_Description	Portraits will be resized to accomodate larger parties.	h0196c862gbe00g4201g91d9g5f7069b4b74a
 LLPARTY_Variables_PartySize	Party Size Limit	he77f76eagbfd4g4359gbda1g81f50fdd9f6f

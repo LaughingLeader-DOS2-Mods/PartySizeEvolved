@@ -25,6 +25,7 @@
 	<content contentuid="h2ed69f01g766cg4209gaeceg8308833a7834">[Back]</content>
 	<content contentuid="h2fd6988bg98f9g4907ga728gae89ef2bfa01">Cancel</content>
 	<content contentuid="h31cdb419ge02bg448dg896dg0ecf65ad1efb">Switch to your next controlled character.</content>
+	<content contentuid="h34a25dbeg81ebg4382g8698gf292d183ccf2">Party Size Evolved</content>
 	<content contentuid="h35b1cbf1gcc11g4eceg9783g98b555bab00a">[Confirm] Changes</content>
 	<content contentuid="h36731f08g1ca5g4ec2gbeb9g4ea8a7042fab">Host Settings&lt;br&gt;Max Party Size: [LLPARTY_MaxPartySize_6e79a6d2-a814-4efa-8ccd-1b9d4810024b]</content>
 	<content contentuid="h37d33d45g1079g4001gaaebgb0670182a4a1">Management Options for [LLPARTY_PartyManagement_SelectedCharacter_4be2a6a0-6569-40f2-ae42-32cef8dca19a]&lt;br&gt;</content>
@@ -34,6 +35,7 @@
 	<content contentuid="h3bf6be1dgddccg4610gae4eg280564f9ae01">Party Size Evolved Settings</content>
 	<content contentuid="h400769abge462g45bcg92bdgb6cbcc2af077">Commands</content>
 	<content contentuid="h403a3f7dg568eg4e63gaf28geed0cd67ce8e">[LLPARTY_PartyManagement_Character10_c999b4aa-0c4e-4862-a239-95d59420d480]</content>
+	<content contentuid="h40d8c099g6975g4c4bg8775g84429210e5c7">Expands the party size to 6 by default. This can be increased/decreased at will via the settings menu, allowing you to have up to 10 party members at once. If the extender is enabled, the lobby will work with more than 4 players, allowing 5+ players in character creation (EXPERIMENTAL).</content>
 	<content contentuid="h422f3b55g8f9bg440bg9298ga3eb5f3018cf">[LLPARTY_PartyManagement_Character08_019033bb-1e5a-4ba4-bfcd-d8616afd8621]</content>
 	<content contentuid="h430b0bc3g861bg4a8fg93b2g82a024697291">Party Management</content>
 	<content contentuid="h439f2f90gac3fg4567gbbf1g04d1815cf0a2">(DEBUG) Remove party size limit. (&lt;b&gt;WARNING&lt;/b&gt;: Enable at your own risk! This is likely to be unstable.)</content>
