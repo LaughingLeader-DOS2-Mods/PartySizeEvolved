@@ -127,6 +127,7 @@
 	<content contentuid="hf532a81dgdabcg48faga462g20001399940b">Loading management options...</content>
 	<content contentuid="hf66f7c9fgdec8g4c3fgb3f5g5f521a3b48fc">Transferring character to user...</content>
 	<content contentuid="hf8992d13g2603g459ag9cbag84d3b27b0f70">Loading users...</content>
+	<content contentuid="hf900b47egd946g4678g9286g337d79a5c265">The Hall of Echoes is currently in use by 4 players. Please wait for a player to exit, then interact with the shrine again.&lt;br&gt;(Party Size Evolved) </content>
 	<content contentuid="hfd603d7fg78eeg47e7g9f38gf1d346ad9731">Transfer character to [LLPARTY_PartyManagement_User02_d4c70a51-cb99-434e-b164-307651661f5e].</content>
 	<content contentuid="hfdc23238g76e6g40f9g9a0ag5a03c79be2e7">Selected user has disconnected. Canceling...</content>
 	<content contentuid="hfdca7779gc23cg4890gb4d7gc4684f0d1607">Assign [LLPARTY_PartyManagement_SelectedCharacter_4be2a6a0-6569-40f2-ae42-32cef8dca19a] to user.</content>
