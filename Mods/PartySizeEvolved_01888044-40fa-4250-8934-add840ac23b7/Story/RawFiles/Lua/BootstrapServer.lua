@@ -4,8 +4,6 @@ Ext.Require("Server/Patcher.lua")
 
 ---@alias OriginsRegions "TUT_Tutorial_A"|"FJ_FortJoy_Main"|"LV_HoE_Main"|"RC_Main"|"CoS_Main"|"ARX_Main"|"ARX_Endgame"
 
-
-
 local function DebugConfigurePlayer(uuid, id, makeGlobal)
 	if makeGlobal then
 		NRD_CharacterSetGlobal(uuid, 1)

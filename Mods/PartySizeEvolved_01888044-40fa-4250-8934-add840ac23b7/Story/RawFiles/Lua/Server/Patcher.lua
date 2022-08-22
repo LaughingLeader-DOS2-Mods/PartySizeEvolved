@@ -19,6 +19,7 @@ function Patcher.AddRegionListener(event, region, callback)
 end
 
 Ext.Require("Server/Patches/Tutorial.lua")
+Ext.Require("Server/Patches/FortJoy.lua")
 
 local function OnGameStarted(region)
 	local tbl = Patcher.Listeners.GameStarted[region]
