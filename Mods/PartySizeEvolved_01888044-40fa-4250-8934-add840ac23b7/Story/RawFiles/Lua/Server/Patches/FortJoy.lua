@@ -50,8 +50,8 @@ end
 
 local function AddToPointsDB(trigger, target)
 	Osi.DB_FTJ_HoE_ReturnPoints:Delete(nil, trigger, nil, target) -- Clear previous players
-	-- The DB_FTJ_HoE_ReturnPoints database event checks if they have a dialog before transforming. Need to delete the last one
-	Osi.DB_Dialogs:Delete(target, nil)
+	-- The DB_FTJ_HoE_ReturnPoints database event checks if they have a dialog before transforming. Need to delete the previous dialog set
+	Osi.ProcRemoveAllDialogEntriesForSpeaker(target)
 	--Finally add to the DB the DialogEnded rule needs
 	Osi.DB_FTJ_HoE_ToPoints(trigger, target)
 end
@@ -86,6 +86,7 @@ local function OnDialogEnded(dialog, inst)
 			and IsTagged(playerGUID, "AVATAR") == 1 then
 				if not ProvideAvatarDestination() then
 					OpenMessageBox(playerGUID, "LLPARTY_FTJ_HallOfEchoesInUse")
+					ObjectClearFlag(playerGUID, "FTJ_SW_ShrineSendToHoE", 0) -- Clear so the dialog repeats the previous lines again
 				end
 			end
 		end
