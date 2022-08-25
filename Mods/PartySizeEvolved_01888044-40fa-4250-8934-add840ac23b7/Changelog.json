@@ -8,7 +8,7 @@
 		{
 			"Version": "1.3.2.0",
 			"Changes": [
-				"Added a workaround for the story beat where a shrine teleports you in Fort Joy, and you ultimately get the Bless spell. This event is normally limited to 4 avatar characters, at which point you no longer get teleported.<br>Note:The workaround will make sure a spot is open before making the teleportation work, otherwise a message will appear to inform you to wait until a player exits the Hall of Echoes."
+				"Added a workaround for the story section where a shrine teleports you in Fort Joy, and you ultimately get the Bless spell. This event is normally limited to 4 avatar characters, at which point you no longer get teleported.<br>Note:The workaround will make sure a spot is open before making the teleportation work, otherwise a message will appear to inform you to wait until a player exits the Hall of Echoes."
 			]
 		},
 		{
