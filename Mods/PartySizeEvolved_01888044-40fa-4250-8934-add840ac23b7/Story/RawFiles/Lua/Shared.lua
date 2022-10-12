@@ -9,7 +9,7 @@ Utils = {}
 function Utils.GetPlayers(asTable)
 	local players = {}
 	if not _ISCLIENT then
-		if Ext.OsirisIsCallable() then
+		if Ext.Osiris.IsCallable() then
 			for _,db in pairs(Osi.DB_IsPlayer:Get(nil)) do
 				local player = Ext.Entity.GetCharacter(db[1])
 				if player then
@@ -100,7 +100,7 @@ if not _ISCLIENT then
 	Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(timerName)
 		if timerName == "Timers_LLPARTY_UpdatePortraits" then
 			for id,b in pairs(updateUsers) do
-				Ext.PostMessageToUser(id, "LLPARTY_RepositionPortraits", "")
+				Ext.Net.PostMessageToUser(id, "LLPARTY_RepositionPortraits", "")
 			end
 			updateUsers = {}
 		end
@@ -168,19 +168,31 @@ Ext.Events.ResetCompleted:Subscribe(function (e)
 	SetNumPlayers()
 end)
 
+local function _UpdateInternals(amount)
+	GlobalClearFlag("GEN_MaxPlayerCountReached")
+	Osi.DB_LLPARTY_MaxPartySize:Delete(nil)
+	Osi.DB_Origins_MaxPartySize:Delete(nil)
+	Osi.DB_Origins_MaxPartySize(amount)
+	Osi.DB_LLPARTY_MaxPartySize(amount)
+	Osi.Proc_CheckPartyFull()
+	Osi.LLPARTY_InstallMod()
+	Osi.LLPARTY_Settings_UpdateDialogVars()
+end
+
 ---@param amount integer
 local function OnPartySizeChanged(amount)
 	if amount > 0 then
 		MAX_PLAYERS = amount
 		if not _ISCLIENT then
-			Osi.DB_LLPARTY_MaxPartySize:Delete(nil)
-			Osi.DB_Origins_MaxPartySize:Delete(nil)
-			Osi.DB_Origins_MaxPartySize(amount)
-			Osi.DB_LLPARTY_MaxPartySize(amount)
-			Osi.Proc_CheckPartyFull()
-			Osi.LLPARTY_InstallMod()
-			Osi.LLPARTY_Settings_UpdateDialogVars()
-			GlobalClearFlag("GEN_MaxPlayerCountReached")
+			if Ext.Osiris.IsCallable() then
+				_UpdateInternals(amount)
+			else
+				Ext.OnNextTick(function (e)
+					if Ext.Osiris.IsCallable() then
+						_UpdateInternals(amount)
+					end
+				end)
+			end
 		else
 			UpdateLobby()
 		end
