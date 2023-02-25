@@ -118,6 +118,7 @@ else
 	end)
 end
 
+--print(Ext.Server.GetModManager().BaseModule.Info.NumPlayers)
 local GetCampaignInfo = function()
 	local manager = nil
 	if _ISCLIENT then
@@ -136,15 +137,14 @@ function TryLoadMultiplayerLimit()
 		local settings = Ext.Json.Parse(partySizeSettings)
 		if settings and type(settings.Max) == "number" then
 			local maxCount = math.ceil(settings.Max)
-			MAX_PLAYERS = maxCount
+			return maxCount
 		end
 	end
 end
 
 function SetNumPlayers(maxCount)
 	if not maxCount then
-		TryLoadMultiplayerLimit()
-		maxCount = MAX_PLAYERS
+		maxCount = TryLoadMultiplayerLimit()
 	end
 	if maxCount then
 		local info = GetCampaignInfo()
@@ -183,6 +183,7 @@ end
 local function OnPartySizeChanged(amount)
 	if amount > 0 then
 		MAX_PLAYERS = amount
+		SetNumPlayers(MAX_PLAYERS)
 		if not _ISCLIENT then
 			if Ext.Osiris.IsCallable() then
 				_UpdateInternals(amount)
