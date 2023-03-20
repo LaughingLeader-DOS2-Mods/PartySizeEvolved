@@ -20,7 +20,7 @@ local FTJ_HoE_ToPoints = {
 	{Trigger = "f4a1e725-effe-4a82-89c4-c92c47f1643a", Target = "295b92ad-fd83-4e50-b1d5-f6fbf76e4a04"},
 }
 
----@param guid UUID
+---@param guid Guid
 local function PlayerIsInHoE(guid)
 	--S_FTJ_SW_SUB_HallOfEchoes_3451f5d3-5b43-49d7-876b-82f5b7c9b65d
 	local isInTrigger = Osi.DB_InRegion:Get(guid, "3451f5d3-5b43-49d7-876b-82f5b7c9b65d")
@@ -58,7 +58,7 @@ end
 
 local function ProvideAvatarDestination()
 	if not AnyPlayersInHoE() then
-		local entry = FTJ_HoE_ToPoints[Ext.Random(1,4)]
+		local entry = FTJ_HoE_ToPoints[Ext.Utils.Random(1,4)]
 		AddToPointsDB(entry.Trigger, entry.Target)
 		return true
 	end
